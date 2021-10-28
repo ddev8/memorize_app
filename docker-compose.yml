@@ -1,0 +1,36 @@
+version: '3'
+services:
+#   server: # We can add other specific layouts (server as example)
+#     build:
+#       context: ./
+#       dockerfile: Dockerfile
+#     ports:
+#       - "9000:9000"
+#     container_name: server
+#     volumes:
+#        - ./:/usr/src/app
+#        - /usr/src/app/node_modules
+#     command: npm run server
+  frontend-aio:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+      - "49153:49153"
+    container_name: frontend-aio
+    volumes:
+       - ./:/usr/src/app
+       - /usr/src/app/node_modules
+    command: npm run start
+  frontend-test-aio:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "9876:9876"
+    container_name: frontend-test-aio
+    volumes:
+       - ./:/usr/src/app
+       - /usr/src/app/node_modules
+    command: npm run test
