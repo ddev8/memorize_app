@@ -7,6 +7,7 @@ import { PrimeNgModule } from './shared/prime-ng/prime-ng.module';
 import { TextMemorizationComponent } from './text-memorization/text-memorization.component';
 import { NavMenuComponent } from './shared/nav-menu/nav-menu.component';
 import { IndexPageComponent } from './index-page/index-page.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,9 @@ import { IndexPageComponent } from './index-page/index-page.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    PrimeNgModule
+    PrimeNgModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
