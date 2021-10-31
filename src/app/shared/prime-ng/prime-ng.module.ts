@@ -3,7 +3,10 @@ import { CommonModule } from '@angular/common';
 
 import { TableModule } from 'primeng/table';
 import { MenubarModule } from 'primeng/menubar';
-import {ProgressBarModule} from 'primeng/progressbar';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
 
 
 @NgModule({
@@ -11,12 +14,18 @@ import {ProgressBarModule} from 'primeng/progressbar';
   imports: [
     CommonModule,
     TableModule,
-    ProgressBarModule
+    ProgressBarModule,
+    InputTextModule,
+    CardModule,
+    ButtonModule,
   ],
   exports: [
     TableModule,
     MenubarModule,
-    ProgressBarModule
+    ProgressBarModule,
+    InputTextModule,
+    CardModule,
+    ButtonModule
   ]
 })
 export class PrimeNgModule { }

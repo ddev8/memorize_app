@@ -1,21 +1,34 @@
+<p-card id="new-item">
+  <form [formGroup]="newItemForm" (ngSubmit)="saveItem()">
+    <span class="p-float-label">
+      <input id="new-item--value" type="text" pInputText formControlName="value">
+      <label for="float-input">Value</label>
+    </span>
+    <span class="p-float-label">
+      <input id="new-item--description" type="text" pInputText formControlName="description">
+      <label for="float-input">Description</label>
+    </span>
+    <button id="new-item--save" pButton type="submit" [disabled]="!newItemForm.valid">Memorize!</button>
+  </form>
+</p-card>
 <p-table [columns]="columns" [value]="rows" id="memorize-table">
   <ng-template pTemplate="header" let-columns>
-      <tr>
-          <th *ngFor="let col of columns" class="text-center">
-              {{col.header}}
-          </th>
-      </tr>
+    <tr>
+      <th *ngFor="let col of columns" class="text-center">
+        {{col.header}}
+      </th>
+    </tr>
   </ng-template>
   <ng-template pTemplate="body" let-row let-columns="columns">
-      <tr>
-          <ng-container *ngFor="let col of columns">
-            <td *ngIf="col.field === 'progress'" class="text-center">
-              <p-progressBar [value]="row[col.field]"></p-progressBar>
-            </td>
-            <td *ngIf="col.field !== 'progress'" class="text-center">
-              {{ row[col.field] }}
-            </td>
-          </ng-container>
-      </tr>
+    <tr>
+      <ng-container *ngFor="let col of columns">
+        <td *ngIf="col.field === 'progress'" class="text-center">
+          <p-progressBar [value]="row[col.field]"></p-progressBar>
+        </td>
+        <td *ngIf="col.field !== 'progress'" class="text-center">
+          {{ row[col.field] }}
+        </td>
+      </ng-container>
+    </tr>
   </ng-template>
 </p-table>
