@@ -3,14 +3,23 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { PrimeNgModule } from './shared/prime-ng/prime-ng.module';
+import { TextMemorizationComponent } from './text-memorization/text-memorization.component';
+import { NavMenuComponent } from './shared/nav-menu/nav-menu.component';
+import { IndexPageComponent } from './index-page/index-page.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NavMenuComponent,
+    TextMemorizationComponent,
+    NavMenuComponent,
+    IndexPageComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    PrimeNgModule
   ],
   providers: [],
   bootstrap: [AppComponent]
