@@ -1,14 +1,14 @@
-<p-card id="new-item">
+<p-card class="new-item">
   <form [formGroup]="newItemForm" (ngSubmit)="saveItem()">
     <span class="p-float-label">
-      <input id="new-item--value" type="text" pInputText formControlName="value">
+      <input class="new-item__value" type="text" pInputText formControlName="value">
       <label for="float-input">Value</label>
     </span>
     <span class="p-float-label">
-      <input id="new-item--description" type="text" pInputText formControlName="description">
+      <input class="new-item__description" type="text" pInputText formControlName="description">
       <label for="float-input">Description</label>
     </span>
-    <button id="new-item--save" pButton type="submit" [disabled]="!newItemForm.valid">Memorize!</button>
+    <button class="new-item__save" pButton type="submit" [disabled]="!newItemForm.valid">Memorize!</button>
   </form>
 </p-card>
 <p-table [columns]="columns" [value]="rows" id="memorize-table">

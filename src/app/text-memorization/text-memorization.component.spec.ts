@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
+import { PrimeNgModule } from '../shared/prime-ng/prime-ng.module';
 
 import { TextMemorizationComponent } from './text-memorization.component';
 
@@ -14,7 +15,7 @@ describe('TextMemorizationComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ TextMemorizationComponent ],
-      imports: [TableModule, ProgressBarModule, FormsModule, ReactiveFormsModule]
+      imports: [TableModule, FormsModule, ReactiveFormsModule, PrimeNgModule]
     })
     .compileComponents();
   });
@@ -50,28 +51,30 @@ describe('TextMemorizationComponent', () => {
 
   describe('Input', () => {
     it('Should render value', () => {
-      const inputValue: DebugElement = fixture.debugElement.query(By.css('#new-item--value'));
+      const inputValue: DebugElement = fixture.debugElement.query(By.css('.new-item__value'));
       expect(inputValue).toBeTruthy();
     })
     it('Should render description', () => {
-      const descriptionValue: DebugElement = fixture.debugElement.query(By.css('#new-item--description'));
+      const descriptionValue: DebugElement = fixture.debugElement.query(By.css('.new-item__description'));
       expect(descriptionValue).toBeTruthy();
     })
     it('Should render \'Memorize\' button', () => {
-      const memorizeBtn: DebugElement = fixture.debugElement.query(By.css('#new-item--save'));
+      const memorizeBtn: DebugElement = fixture.debugElement.query(By.css('.new-item__save'));
       expect(memorizeBtn.nativeElement.innerText).toContain("Memorize!");
       expect(memorizeBtn).toBeTruthy();
     })
-    // it('Should save item', fakeAsync(() => {
-    //   spyOn(component, "saveItem");
+    it('Should call saveItem method', fakeAsync(() => {
+      spyOn(component, "saveItem");
 
-    //   const inputValue: DebugElement = fixture.debugElement.query(By.css('#new-item--value'));
-    //   inputValue.nativeElement.value = "Testing value";
-    //   const memorizeBtn: DebugElement = fixture.debugElement.query(By.css('#new-item--save'));
-    //   memorizeBtn.nativeElement.click();
-    //   tick();
-    //   expect(component.saveItem).toHaveBeenCalled();
-    // }))
+      const inputValue: DebugElement = fixture.debugElement.query(By.css('.new-item__value'));
+      inputValue.nativeElement.value = "Testing value";
+      fixture.detectChanges();
+      const form: DebugElement = fixture.debugElement.query(By.css('form'));
+      form.triggerEventHandler('submit', null);
+      tick();
+      fixture.detectChanges();
+      expect(component.saveItem).toHaveBeenCalled();
+    }))
 
   })
 });
