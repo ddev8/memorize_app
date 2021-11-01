@@ -60,7 +60,6 @@ describe('TextMemorizationComponent', () => {
     })
     it('Should render \'Memorize\' button', () => {
       const memorizeBtn: DebugElement = fixture.debugElement.query(By.css('.new-item__save'));
-      expect(memorizeBtn.nativeElement.innerText).toContain("Memorize!");
       expect(memorizeBtn).toBeTruthy();
     })
     it('Should call saveItem method', fakeAsync(() => {
