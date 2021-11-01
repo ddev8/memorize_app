@@ -1,16 +1,13 @@
-#new-item form {
+.new-item form {
   display: flex;
   justify-content: space-around;
-}
-
-#new-item--value {
-  width: 40vw;
-}
-
-#new-item--description {
-  width: 40vw;
-}
-
-#new-item--save {
-  width: 10vw;
+  .new-item__value {
+    width: 40vw;
+  }
+  .new-item__description {
+    width: 40vw;
+  }
+  .new-item__save {
+    width: 10vw;
+  }
 }
