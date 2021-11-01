@@ -8,7 +8,7 @@
       <input class="new-item__description" type="text" pInputText formControlName="description">
       <label for="float-input">Description</label>
     </span>
-    <button class="new-item__save" pButton type="submit" [disabled]="!newItemForm.valid">Memorize!</button>
+    <button class="new-item__save" pButton type="submit" label="Memorize" icon="pi pi-check" iconPos="right" [disabled]="!newItemForm.valid"></button>
   </form>
 </p-card>
 <p-table [columns]="columns" [value]="rows" id="memorize-table">
