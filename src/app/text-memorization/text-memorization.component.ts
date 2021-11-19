@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TForm } from '../shared/forms/helper';
 
@@ -22,7 +22,8 @@ type FormModel = {
 @Component({
   selector: 'app-text-memorization',
   templateUrl: './text-memorization.component.html',
-  styleUrls: ['./text-memorization.component.scss']
+  styleUrls: ['./text-memorization.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class TextMemorizationComponent implements OnInit {
   public newItemForm: TForm<FormModel>;
@@ -34,7 +35,7 @@ export class TextMemorizationComponent implements OnInit {
     { field: "progress", header: "Progress" },
   ];
   public rows: TableRow[] = [
-    { id: 1, value: "Mock text", description: "test", progress: 0 }
+    { id: 1, value: "Mock text", description: "test", progress: 35 }
   ]
   constructor(
     private readonly fb: FormBuilder,
