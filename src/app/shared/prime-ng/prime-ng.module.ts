@@ -7,6 +7,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
+import { DataViewModule } from 'primeng/dataview';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { ButtonModule } from 'primeng/button';
     InputTextModule,
     CardModule,
     ButtonModule,
+    DataViewModule,
   ],
   exports: [
     TableModule,
@@ -25,7 +27,8 @@ import { ButtonModule } from 'primeng/button';
     ProgressBarModule,
     InputTextModule,
     CardModule,
-    ButtonModule
+    ButtonModule,
+    DataViewModule,
   ]
 })
 export class PrimeNgModule { }
