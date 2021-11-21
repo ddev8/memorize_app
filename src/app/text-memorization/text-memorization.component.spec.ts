@@ -31,25 +31,6 @@ describe('TextMemorizationComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  xdescribe('Table', () => {
-    it('Rows should\'t be empty', () => {
-      // const rows = component.rows;
-      // expect(rows.length).toBeGreaterThan(0);
-    })
-
-    it('Should render columns', () => {
-      const tableEl: DebugElement = fixture.debugElement.query(By.css('#memorize-table'));
-      const column: HTMLTableCellElement | null = (<HTMLElement>tableEl.nativeElement).querySelector('th');
-      expect(column).not.toBeNull();
-    })
-
-    it('Should render rows', () => {
-      const tableEl: DebugElement = fixture.debugElement.query(By.css('#memorize-table'));
-      const cell: HTMLTableCellElement | null = (<HTMLElement>tableEl.nativeElement).querySelector('td');
-      expect(cell).not.toBeNull();
-    })
-  })
-
   describe('Input', () => {
     it('Should render value', () => {
       const inputValue: DebugElement = fixture.debugElement.query(By.css('.new-item__value'));
@@ -76,5 +57,20 @@ describe('TextMemorizationComponent', () => {
       expect(component.saveItem).toHaveBeenCalled();
     }))
 
+  })
+
+  describe('Methods', () => {
+    it('Should save new item', () => {
+      component.memorizeItems = [];
+      component.newItemForm.patchValue( { text: "TextMock", description: "DescrMock" });
+      component.saveItem();
+      expect(component.memorizeItems.length).toBeGreaterThan(0);
+      expect(component.memorizeItems[0]).toEqual({
+        id: 0,
+        text: "TextMock",
+        description: "DescrMock",
+        progress: 0,
+      });
+    })
   })
 });

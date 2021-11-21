@@ -52,11 +52,11 @@ export class TextMemorizationComponent implements OnInit {
   public saveItem(): void {
     this.newItemForm.value
     const formValue: FormModel = <FormModel>this.newItemForm.value
-    // this.rows.push({
-    //   id: this.rows[this.rows.length - 1].id + 1,
-    //   value: formValue.value,
-    //   description: formValue.description,
-    //   progress: 0
-    // });
+    this.memorizeItems.push({
+      id: this.memorizeItems.length === 0 ? 0 : this.memorizeItems[this.memorizeItems.length - 1].id + 1,
+      text: formValue.text,
+      description: formValue.description,
+      progress: 0
+    });
   }
 }
