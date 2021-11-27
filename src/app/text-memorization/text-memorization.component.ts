@@ -1,14 +1,11 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ConfirmationService } from 'primeng/api';
+
 import { TForm } from '../shared/forms/helper';
+import { MemorizationService } from '../shared/memorization.service';
+import { MemorizeItem } from '../shared/memorize/memorize.model';
 
-
-type MemorizeItem = {
-  id: number;
-  text: string;
-  description: string;
-  progress: number;
-};
 
 type FormModel = {
   text: string;
@@ -19,44 +16,71 @@ type FormModel = {
   selector: 'app-text-memorization',
   templateUrl: './text-memorization.component.html',
   styleUrls: ['./text-memorization.component.scss'],
-  // encapsulation: ViewEncapsulation.None,
 })
 export class TextMemorizationComponent implements OnInit {
-  public newItemForm: TForm<FormModel>;
+  public itemForm: TForm<FormModel>;
+  public editMode: boolean = false;
 
-  public memorizeItems: MemorizeItem[] = [
-    { id: 1, text: "take a nap", description: "короткий сон", progress: 35 },
-    { id: 2, text: "Mock text", description: "test", progress: 35 },
-    { id: 3, text: "Mock text", description: "test", progress: 35 },
-    { id: 4, text: "Mock text", description: "test", progress: 35 },
-    { id: 4, text: "Mock text", description: "test", progress: 35 },
-    { id: 4, text: "Mock text", description: "test", progress: 35 },
-    { id: 4, text: "Mock text", description: "test", progress: 35 },
-    { id: 4, text: "Mock text", description: "", progress: 35 },
-    { id: 4, text: "Mock text", description: "", progress: 35 },
-    { id: 4, text: "Mock text", description: "", progress: 35 },
-    { id: 4, text: "Mock text", description: "", progress: 35 },
-  ]
+  public memorizeItems: MemorizeItem[] = [];
+  private itemBeingEdited: MemorizeItem | undefined = undefined;
+
   constructor(
     private readonly fb: FormBuilder,
+    private readonly memorizeService: MemorizationService,
+    private readonly confirmationService: ConfirmationService,
   ) {
-    this.newItemForm = this.fb.group({
+    this.itemForm = this.fb.group({
       text: this.fb.control({ value: "", disabled: false }, [Validators.required]),
-      description: this.fb.control({ value: "", disabled: false }),
+      description: this.fb.control({ value: "", disabled: false }, [Validators.required]),
     }) as TForm<FormModel>;
   }
 
   ngOnInit(): void {
+    this.memorizeService.getMemorizeItems().subscribe({
+      next: (items: MemorizeItem[]) => {
+        this.memorizeItems = items;
+      }
+    });
   }
 
-  public saveItem(): void {
-    this.newItemForm.value
-    const formValue: FormModel = <FormModel>this.newItemForm.value
-    this.memorizeItems.push({
-      id: this.memorizeItems.length === 0 ? 0 : this.memorizeItems[this.memorizeItems.length - 1].id + 1,
-      text: formValue.text,
-      description: formValue.description,
-      progress: 0
+  public createItem(): void {
+    const formValue: FormModel = <FormModel>this.itemForm.value;
+    this.memorizeService.createItem(formValue);
+  }
+
+  public editItem(memorizeItem: MemorizeItem): void {
+    this.editMode = true;
+    this.itemBeingEdited = memorizeItem;
+    this.itemForm.patchValue({
+      text: memorizeItem.getText(),
+      description: memorizeItem.getDescription(),
+    });
+  }
+
+  public updateItem(): void {
+    if (this.itemBeingEdited === undefined) {
+      throw Error('No item to update');
+    }
+    const formValue: FormModel = <FormModel>this.itemForm.value;
+    this.itemBeingEdited.setDescription(formValue.description);
+    this.itemBeingEdited.setText(formValue.text);
+
+    this.memorizeService.updateItem(this.itemBeingEdited);
+    this.editMode = false;
+    this.itemBeingEdited = undefined;
+    this.itemForm.reset();
+  }
+
+  public removeItem(memorizeItem: MemorizeItem): void {
+    this.confirm('Delete item?', () => {
+      this.memorizeService.deleteItem(memorizeItem);
+    })
+  }
+
+  public confirm(msg: string, cb: () => void): void {
+    this.confirmationService.confirm({
+      message: msg,
+      accept: cb
     });
   }
 }
