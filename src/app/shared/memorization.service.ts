@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument, DocumentChangeAction } from '@angular/fire/compat/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MemorizeItem } from './memorize/memorize.model';
@@ -18,7 +18,6 @@ type CreateMemorizeItem = {
   description: string;
 }
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -29,7 +28,7 @@ export class MemorizationService {
     private readonly db: AngularFirestore
   ) { }
 
-  public getMemorizeItems(): Observable<any> {
+  public getMemorizeItems(): Observable<MemorizeItem[]> {
     return this.getCollectionValue()
       .pipe(
         map(
@@ -56,7 +55,7 @@ export class MemorizationService {
       text: userInput.text
     });
     const reminderDate: Date = memorizeItem.updateReminderDate();
-    // TODO: Send reminder date and id to backend.
+    this.setReminder(documentUID, reminderDate);
     document.set(memorizeItem.toPlainObj());
   }
 
@@ -78,9 +77,9 @@ export class MemorizationService {
       .delete();
   }
 
-  // public setReminder(memorizeItem: MemorizeItem): boolean {
-  //   return this.backend.saveReminder(memorizeItem.getId(), memorizeItem.getReminderDate());
-  // }
+  public setReminder(uuid: string, dateReminder: Date): void {
+    // TODO: Send reminder date and id to backend.
+  }
 
   private getCollectionValue(): Observable<MemorizeItemFromDB[]> {
     return <Observable<MemorizeItemFromDB[]>>this.db.collection(MemorizationService.DB_COLLECTION_NAME)
