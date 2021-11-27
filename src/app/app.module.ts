@@ -6,10 +6,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PrimeNgModule } from './shared/prime-ng/prime-ng.module';
+import { PrimeNgModule } from './shared/prime-ng-module/prime-ng.module';
 import { TextMemorizationComponent } from './text-memorization/text-memorization.component';
 import { NavMenuComponent } from './shared/nav-menu/nav-menu.component';
 import { IndexPageComponent } from './index-page/index-page.component';
+import { FirestoreModule } from './shared/firestore-module/firestore.module';
+import { MemorizationService } from './shared/memorization.service';
 
 @NgModule({
   declarations: [
@@ -26,8 +28,11 @@ import { IndexPageComponent } from './index-page/index-page.component';
     PrimeNgModule,
     FormsModule,
     ReactiveFormsModule,
+    FirestoreModule,
   ],
-  providers: [],
+  providers: [
+    MemorizationService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
