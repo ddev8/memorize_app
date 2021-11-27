@@ -8,12 +8,15 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import {ConfirmationService} from 'primeng/api';
 
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
+    ConfirmDialogModule,
     TableModule,
     ProgressBarModule,
     InputTextModule,
@@ -29,6 +32,10 @@ import { DataViewModule } from 'primeng/dataview';
     CardModule,
     ButtonModule,
     DataViewModule,
+    ConfirmDialogModule,
+  ],
+  providers: [
+    ConfirmationService
   ]
 })
 export class PrimeNgModule { }
