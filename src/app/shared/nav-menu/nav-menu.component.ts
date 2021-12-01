@@ -10,11 +10,6 @@ export class NavMenuComponent implements OnInit {
 
   public readonly menuItems: MenuItem[] = [
     {
-      label: 'Index',
-      icon: 'pi pi-fw pi-info-circle',
-      routerLink: "/"
-    },
-    {
       label: 'Memorize',
       icon: 'pi pi-fw pi-book',
       routerLink: "memorize"

@@ -9,7 +9,8 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import {ConfirmationService} from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import {ConfirmationService} from 'primeng/api';
     CardModule,
     ButtonModule,
     DataViewModule,
+    ToastModule,
   ],
   exports: [
     TableModule,
@@ -33,9 +35,11 @@ import {ConfirmationService} from 'primeng/api';
     ButtonModule,
     DataViewModule,
     ConfirmDialogModule,
+    ToastModule,
   ],
   providers: [
-    ConfirmationService
+    ConfirmationService,
+    MessageService,
   ]
 })
 export class PrimeNgModule { }

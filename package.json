@@ -10,7 +10,8 @@
     "docker:up": "docker-compose up",
     "docker:down": "docker-compose down",
     "docker:frontend": "docker-compose up frontend-aio",
-    "docker:test": "docker-compose up frontend-test-aio"
+    "docker:test": "docker-compose up frontend-test-aio",
+    "build:upload": "npm run build && firebase deploy"
   },
   "private": true,
   "dependencies": {

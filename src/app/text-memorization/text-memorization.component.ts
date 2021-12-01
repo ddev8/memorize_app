@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ConfirmationService } from 'primeng/api';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { TForm } from '../shared/forms/helper';
 import { MemorizationService } from '../shared/memorization.service';
@@ -28,6 +28,7 @@ export class TextMemorizationComponent implements OnInit {
     private readonly fb: FormBuilder,
     private readonly memorizeService: MemorizationService,
     private readonly confirmationService: ConfirmationService,
+    private readonly messageService: MessageService,
   ) {
     this.itemForm = this.fb.group({
       text: this.fb.control({ value: "", disabled: false }, [Validators.required]),
@@ -45,7 +46,11 @@ export class TextMemorizationComponent implements OnInit {
 
   public createItem(): void {
     const formValue: FormModel = <FormModel>this.itemForm.value;
-    this.memorizeService.createItem(formValue);
+    const result: boolean | Error = this.memorizeService.createItem(formValue)
+
+    if (result instanceof Error) {
+      this.showToastError(result);
+    }
   }
 
   public editItem(memorizeItem: MemorizeItem): void {
@@ -65,7 +70,10 @@ export class TextMemorizationComponent implements OnInit {
     this.itemBeingEdited.setDescription(formValue.description);
     this.itemBeingEdited.setText(formValue.text);
 
-    this.memorizeService.updateItem(this.itemBeingEdited);
+    const result: boolean | Error = this.memorizeService.updateItem(this.itemBeingEdited);
+    if (result instanceof Error) {
+      this.showToastError(result);
+    }
     this.editMode = false;
     this.itemBeingEdited = undefined;
     this.itemForm.reset();
@@ -73,7 +81,10 @@ export class TextMemorizationComponent implements OnInit {
 
   public removeItem(memorizeItem: MemorizeItem): void {
     this.confirm('Delete item?', () => {
-      this.memorizeService.deleteItem(memorizeItem);
+      const result: boolean | Error = this.memorizeService.deleteItem(memorizeItem);
+      if (result instanceof Error) {
+        this.showToastError(result);
+      }
     })
   }
 
@@ -82,5 +93,9 @@ export class TextMemorizationComponent implements OnInit {
       message: msg,
       accept: cb
     });
+  }
+
+  private showToastError(error:  Error): void {
+    this.messageService.add({severity: 'error', summary: 'Submit error', detail: error.message });
   }
 }
