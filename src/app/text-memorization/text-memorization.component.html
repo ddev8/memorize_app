@@ -10,7 +10,7 @@
         <label for="float-input">Description</label>
       </span>
       <div class="form-control col-12 md:col-2 lg:col-2">
-        <button class="new-item__save" pButton type="submit" label="Memorize" icon="pi pi-check" iconPos="right"
+        <button class="new-item__save" pButton type="submit" [label]="editMode ? 'Update' : 'Memorize'" icon="pi pi-check" iconPos="right"
           [disabled]="!itemForm.valid"></button>
       </div>
     </form>
@@ -40,3 +40,4 @@
     </p-dataView>
 </div>
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-toast position="top-right"></p-toast>

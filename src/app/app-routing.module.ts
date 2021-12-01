@@ -6,10 +6,6 @@ import { TextMemorizationComponent } from './text-memorization/text-memorization
 const routes: Routes = [
   {
     path: '',
-    component: IndexPageComponent,
-  },
-  {
-    path: 'memorize',
     component: TextMemorizationComponent,
   }
 ];

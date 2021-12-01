@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { FirebaseError } from '@firebase/util'
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
 import { MemorizeItem } from './memorize/memorize.model';
 
 type MemorizeItemFromDB = {
@@ -43,7 +45,7 @@ export class MemorizationService {
       );
   }
 
-  public createItem(userInput: CreateMemorizeItem): void {
+  public createItem(userInput: CreateMemorizeItem): true | Error {
     const document: firebase.default.firestore.DocumentReference<unknown> = this.db.collection(MemorizationService.DB_COLLECTION_NAME).ref.doc();
     const documentUID: string = document.id;
     const memorizeItem: MemorizeItem = new MemorizeItem({
@@ -56,25 +58,44 @@ export class MemorizationService {
     });
     const reminderDate: Date = memorizeItem.updateReminderDate();
     this.setReminder(documentUID, reminderDate);
-    document.set(memorizeItem.toPlainObj());
+
+    try {
+      document.set(memorizeItem.toPlainObj());
+
+      return true;
+    } catch(e: unknown) {
+      return this.errorHandler(e);
+    }
   }
 
-  public updateItem(memorizeItem: MemorizeItem): void {
-    this.db.collection(MemorizationService.DB_COLLECTION_NAME)
-      .doc(memorizeItem.getId())
-      .update({
-        text: memorizeItem.getText(),
-        description: memorizeItem.getDescription(),
-        progress: memorizeItem.getProgress(),
-        date: memorizeItem.getDate(),
-        remind_date: memorizeItem.getReminderDate(),
-      });
+  public updateItem(memorizeItem: MemorizeItem): true | Error {
+    try {
+      this.db.collection(MemorizationService.DB_COLLECTION_NAME)
+        .doc(memorizeItem.getId())
+        .update({
+          text: memorizeItem.getText(),
+          description: memorizeItem.getDescription(),
+          progress: memorizeItem.getProgress(),
+          date: memorizeItem.getDate(),
+          remind_date: memorizeItem.getReminderDate(),
+        });
+
+      return true;
+    } catch(e: unknown) {
+      return this.errorHandler(e);
+    }
   }
 
-  public deleteItem(memorizeItem: MemorizeItem): void {
-    this.db.collection(MemorizationService.DB_COLLECTION_NAME)
-      .doc(memorizeItem.getId())
-      .delete();
+  public deleteItem(memorizeItem: MemorizeItem): true | Error {
+    try {
+      this.db.collection(MemorizationService.DB_COLLECTION_NAME)
+        .doc(memorizeItem.getId())
+        .delete();
+
+      return true;
+    } catch(e: unknown) {
+      return this.errorHandler(e);
+    }
   }
 
   public setReminder(uuid: string, dateReminder: Date): void {
@@ -84,5 +105,14 @@ export class MemorizationService {
   private getCollectionValue(): Observable<MemorizeItemFromDB[]> {
     return <Observable<MemorizeItemFromDB[]>>this.db.collection(MemorizationService.DB_COLLECTION_NAME)
       .valueChanges({ idField: 'id'})
+  }
+
+  private errorHandler(e: unknown): Error {
+    console.error(e);
+      const message: string = typeof e === 'object' && e !== null && e.hasOwnProperty('code')
+        ? `${(<FirebaseError>e).name}: ${(<FirebaseError>e).code}`
+        : 'Unknown error. Check console.';
+
+      return new Error(message);
   }
 }
