@@ -48,7 +48,9 @@ export class TextMemorizationComponent implements OnInit {
     const formValue: FormModel = <FormModel>this.itemForm.value;
     const result: boolean | Error = this.memorizeService.createItem(formValue)
 
-    if (result instanceof Error) {
+    if (result === true) {
+      this.itemForm.reset();
+    } else if (result instanceof Error) {
       this.showToastError(result);
     }
   }
@@ -73,10 +75,11 @@ export class TextMemorizationComponent implements OnInit {
     const result: boolean | Error = this.memorizeService.updateItem(this.itemBeingEdited);
     if (result instanceof Error) {
       this.showToastError(result);
+    } else if (result === true) {
+      this.editMode = false;
+      this.itemBeingEdited = undefined;
+      this.itemForm.reset();
     }
-    this.editMode = false;
-    this.itemBeingEdited = undefined;
-    this.itemForm.reset();
   }
 
   public removeItem(memorizeItem: MemorizeItem): void {

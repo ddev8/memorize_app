@@ -3,8 +3,8 @@ type MemorizePlainObject = {
   text: string,
   description: string,
   progress: number,
-  date: Date,
-  reminderDate: Date,
+  date: string,
+  reminderDate: string,
 };
 
 export class MemorizeItem {
@@ -20,8 +20,8 @@ export class MemorizeItem {
     this.text = setup.text;
     this.description = setup.description;
     this.progress = setup.progress;
-    this.date = setup.date;
-    this.reminderDate = setup.reminderDate;
+    this.date = new Date(setup.date);
+    this.reminderDate = new Date(setup.reminderDate);
   }
   public getId(): string {
     return this.id;
@@ -74,9 +74,9 @@ export class MemorizeItem {
       id: this.id,
       text: this.text,
       description: this.description,
-      date: this.date,
+      date: this.date.toISOString(),
       progress: this.progress,
-      reminderDate: this.reminderDate,
+      reminderDate: this.reminderDate.toISOString(),
     }
   }
 
