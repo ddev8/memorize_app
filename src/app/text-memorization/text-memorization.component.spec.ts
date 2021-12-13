@@ -5,6 +5,7 @@ import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
+import { MemorizationService } from '../shared/memorization.service';
 import { PrimeNgModule } from '../shared/prime-ng-module/prime-ng.module';
 
 import { TextMemorizationComponent } from './text-memorization.component';
@@ -16,7 +17,7 @@ describe('TextMemorizationComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ TextMemorizationComponent ],
-      imports: [TableModule, FormsModule, ReactiveFormsModule, PrimeNgModule, BrowserAnimationsModule]
+      imports: [TableModule, FormsModule, ReactiveFormsModule, PrimeNgModule, BrowserAnimationsModule],
     })
     .compileComponents();
   });

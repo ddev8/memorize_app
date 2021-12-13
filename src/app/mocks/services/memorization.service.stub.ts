@@ -1,67 +1,46 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { FirebaseError } from '@firebase/util'
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from "rxjs";
+import { MemorizeItem } from "./memorize/memorize.model";
 
-import { MemorizeItem } from './memorize/memorize.model';
+const memorizeList = [
+  new MemorizeItem({
+    id: "1",
+    date: new Date(),
+    text: "Text 1",
+    description: "Desc 1",
+    progress: 10,
+    reminderDate: new Date(),
+  }),
+  new MemorizeItem({
+    id: "2",
+    date: new Date(),
+    text: "Text 2",
+    description: "Desc 2",
+    progress: 10,
+    reminderDate: new Date(),
+  }),
+]
 
-export type MemorizeItemFromDB = {
-  id: string;
-  text: string;
-  description: string;
-  progress: number;
-  date: any;
-  reminderDate: any;
-};
-
-type CreateMemorizeItem = {
-  text: string;
-  description: string;
-}
-
-@Injectable({
-  providedIn: 'root'
-})
-export class MemorizationService {
-  private static readonly DB_COLLECTION_NAME: string = 'memorize_list';
-
-  constructor(
-    private readonly db: AngularFirestore
-  ) { }
-
+export class MemorizationServiceStub {
   public getMemorizeItems(): Observable<MemorizeItem[]> {
-    return this.getCollectionValue()
-      .pipe(
-        map(
-          (res: MemorizeItemFromDB[]): MemorizeItem[] => {
-            const items: MemorizeItem[] = res.map((e: MemorizeItemFromDB): MemorizeItem => {
-              return new MemorizeItem(e);
-            });
-
-            return items;
-          }
-        )
-      );
+    return of(memorizeList);
   }
 
   public createItem(userInput: CreateMemorizeItem): true | Error {
-    try {
-      const documentUID: string = this.db.createId();
-      const memorizeItem: MemorizeItem = new MemorizeItem({
-        id: documentUID,
-        date: new Date().toISOString(),
-        reminderDate: new Date().toISOString(),
-        progress: 10,
-        description: userInput.description,
-        text: userInput.text
-      });
-      const reminderDate: Date = memorizeItem.updateReminderDate();
-      this.setReminder(documentUID, reminderDate);
+    const document: firebase.default.firestore.DocumentReference<unknown> = this.db.collection(MemorizationService.DB_COLLECTION_NAME).ref.doc();
+    const documentUID: string = document.id;
+    const memorizeItem: MemorizeItem = new MemorizeItem({
+      id: documentUID,
+      date: new Date(),
+      reminderDate: new Date(),
+      progress: 10,
+      description: userInput.description,
+      text: userInput.text
+    });
+    const reminderDate: Date = memorizeItem.updateReminderDate();
+    this.setReminder(documentUID, reminderDate);
 
-      this.db.collection(MemorizationService.DB_COLLECTION_NAME)
-        .doc(documentUID)
-        .set(memorizeItem.toPlainObj());
+    try {
+      memorizeList.push(memorizeItem);
 
       return true;
     } catch(e: unknown) {
