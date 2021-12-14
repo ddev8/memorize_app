@@ -1,11 +1,14 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
+import { AngularFireDatabaseMock, memorize_list } from '../mocks/firestore.mock';
 import { MemorizationService } from '../shared/memorization.service';
+import { MemorizeItem } from '../shared/memorize/memorize.model';
 import { PrimeNgModule } from '../shared/prime-ng-module/prime-ng.module';
 
 import { TextMemorizationComponent } from './text-memorization.component';
@@ -18,6 +21,7 @@ describe('TextMemorizationComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ TextMemorizationComponent ],
       imports: [TableModule, FormsModule, ReactiveFormsModule, PrimeNgModule, BrowserAnimationsModule],
+      providers: [{ provide: AngularFirestore, useClass: AngularFireDatabaseMock }]
     })
     .compileComponents();
   });
@@ -62,16 +66,11 @@ describe('TextMemorizationComponent', () => {
 
   describe('Methods', () => {
     it('Should save new item', () => {
-      // component.memorizeItems = [];
-      // component.itemForm.patchValue( { text: "TextMock", description: "DescrMock" });
-      // component.createItem();
-      // expect(component.memorizeItems.length).toBeGreaterThan(0);
-      // expect(component.memorizeItems[0]).toEqual({
-      //   id: 0,
-      //   text: "TextMock",
-      //   description: "DescrMock",
-      //   progress: 0,
-      // });
+      component.memorizeItems = [];
+      component.itemForm.patchValue( { text: "TextMock", description: "DescrMock" });
+      component.createItem();
+      fixture.detectChanges();
+      expect(component.memorizeItems[1].getText()).toEqual("TextMock");
     })
   })
 });
