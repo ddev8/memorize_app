@@ -1,5 +1,5 @@
 import { FirebaseError } from '@firebase/util';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { MemorizeItemFromDB } from '../shared/memorization.service';
 
 export const immutableItem: MemorizeItemFromDB = {
@@ -21,13 +21,13 @@ export let memorize_list: MemorizeItemFromDB[] = [
     text: 'Create text'
   }
 ];
-
+const memorizeList: BehaviorSubject<MemorizeItemFromDB[]> = new BehaviorSubject(memorize_list);
 
 export class AngularFireDatabaseMock {
   collection(query: string): any {
       return {
           valueChanges() {
-              return of(memorize_list)
+              return memorizeList;
           },
           doc(id: string) {
             return {
@@ -38,7 +38,7 @@ export class AngularFireDatabaseMock {
                 } else {
                   memorize_list.splice(index, 1);
                 }
-
+                memorizeList.next([...memorize_list]);
               },
               update: (val: any) => {
                 const found_el: MemorizeItemFromDB | undefined = memorize_list.find((v: MemorizeItemFromDB) => v.id === id);
@@ -48,6 +48,7 @@ export class AngularFireDatabaseMock {
                   found_el.progress = val.progress;
                   found_el.reminderDate = val.reminderDate;
                   found_el.text = val.text;
+                  memorizeList.next([...memorize_list]);
                 } else {
                   throw new FirebaseError('code', 'FireStore error');
                 }
@@ -55,6 +56,7 @@ export class AngularFireDatabaseMock {
               set: (val: any) => {
                 if (id !== undefined) {
                   memorize_list.push(val);
+                  memorizeList.next([...memorize_list]);
                 } else {
                   throw new FirebaseError('code', 'Save error.')
                 }
@@ -68,5 +70,6 @@ export class AngularFireDatabaseMock {
   }
   restore(): void {
     memorize_list = [{...immutableItem}];
+    memorizeList.next([...memorize_list]);
   }
 }

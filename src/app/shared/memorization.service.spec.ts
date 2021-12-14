@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { MemorizationService } from './memorization.service';
 import { MemorizeItem } from './memorize/memorize.model';
 import { AngularFireDatabaseMock, memorize_list } from '../mocks/firestore.mock';
+import { first } from 'rxjs/operators';
 
 let fs: AngularFirestore;
 
@@ -42,13 +43,16 @@ describe('MemorizationService', () => {
 
   describe('Get items', () => {
     it('Should get items from db', (done) => {
-      // spyOn(fs, "collection").and.returnValue(of(memorize_list));
-      service.getMemorizeItems().subscribe({
-        next: (value) => {
-          expect(value[0]).toEqual(mockItem);
-          done();
-        }
-      })
+      service.getMemorizeItems()
+        .pipe(
+          first()
+        )
+        .subscribe({
+          next: (value) => {
+            expect(value[0]).toEqual(mockItem);
+            done();
+          }
+        })
     })
   })
 
@@ -66,7 +70,7 @@ describe('MemorizationService', () => {
     })
   })
 
-  describe('Create update', () => {
+  describe('Should update', () => {
     it('Should update item', () => {
       mockItem.setText("Updated text");
       const result: true | Error = service.updateItem(mockItem);
