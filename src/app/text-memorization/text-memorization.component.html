@@ -1,0 +1,43 @@
+<div class="grid">
+  <p-card class="new-item col-12">
+    <form [formGroup]="itemForm" (ngSubmit)="editMode ? updateItem() : createItem()" class="grid jc-around">
+      <span class="form-control p-float-label col-12 md:col-5 lg:col-5">
+        <input class="new-item__value" type="text" pInputText formControlName="text">
+        <label for="float-input">Text</label>
+      </span>
+      <span class="form-control p-float-label col-12 md:col-5 lg:col-5">
+        <input class="new-item__description" type="text" pInputText formControlName="description">
+        <label for="float-input">Description</label>
+      </span>
+      <div class="form-control col-12 md:col-2 lg:col-2">
+        <button class="new-item__save" pButton type="submit" [label]="editMode ? 'Update' : 'Memorize'" icon="pi pi-check" iconPos="right"
+          [disabled]="!itemForm.valid"></button>
+      </div>
+    </form>
+  </p-card>
+  <div class="card col-12">
+    <p-dataView #dv [value]="memorizeItems" [paginator]="true" [rows]="9" filterBy="value"
+         layout="grid" [alwaysShowPaginator]="false">
+        <ng-template let-memorize pTemplate="gridItem">
+            <div class="col-12 md:col-4">
+                <div class="memorize-grid-item card">
+                    <div class="memorize-grid-item-top">
+                        <div>
+                            <i class="pi pi-times item-icon" (click)="removeItem(memorize)"></i>
+                        </div>
+                        <div>
+                            <i class="pi pi-pencil item-icon" (click)="editItem(memorize)"></i>
+                        </div>
+                    </div>
+                    <div class="memorize-grid-item-content">
+                        <div class="memorize-name">{{memorize.getText()}}</div>
+                        <div class="memorize-description">{{memorize.getDescription()}}</div>
+                        <p-progressBar [value]="memorize.getProgress()"></p-progressBar>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-dataView>
+</div>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-toast position="top-right"></p-toast>

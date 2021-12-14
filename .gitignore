@@ -1,5 +1,9 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
-
+# firebase
+/.firebase
+.firebase/*
+firestore-debug.log
+ui-debug.log
 # compiled output
 /dist
 /tmp
@@ -15,6 +19,7 @@ chrome-profiler-events*.json
 
 # IDEs and editors
 /.idea
+/.vscode
 .project
 .classpath
 .c9/

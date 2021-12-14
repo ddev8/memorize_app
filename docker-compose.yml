@@ -29,8 +29,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - "9876:9876"
+      - "8080:8080"
+      - "9099:9099"
+      - "5000:5000"
+      - "4000:4000"
     container_name: frontend-test-aio
     volumes:
        - ./:/usr/src/app
        - /usr/src/app/node_modules
-    command: npm run test
+    command: [sh, -c, "npm run firebase:emulator:start & npm run test"]
