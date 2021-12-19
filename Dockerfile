@@ -14,4 +14,6 @@ COPY package*.json ./
 
 RUN npm install
 
+COPY . .
+
 EXPOSE 4200 49153 9876 9099 8080 5000 4000
