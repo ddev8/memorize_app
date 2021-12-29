@@ -8,6 +8,7 @@ import { MemorizeItem } from './memorize/memorize.model';
 
 export type MemorizeItemFromDB = {
   id: string;
+  uid: string;
   text: string;
   description: string;
   progress: number;
@@ -30,8 +31,8 @@ export class MemorizationService {
     private readonly db: AngularFirestore
   ) { }
 
-  public getMemorizeItems(): Observable<MemorizeItem[]> {
-    return this.getCollectionValue()
+  public getMemorizeItems(uid: string): Observable<MemorizeItem[]> {
+    return this.getCollectionValue(uid)
       .pipe(
         map(
           (res: MemorizeItemFromDB[]): MemorizeItem[] => {
@@ -45,7 +46,7 @@ export class MemorizationService {
       );
   }
 
-  public createItem(userInput: CreateMemorizeItem): true | Error {
+  public createItem(userInput: CreateMemorizeItem, uid: string): true | Error {
     try {
       const documentUID: string = this.db.createId();
       const memorizeItem: MemorizeItem = new MemorizeItem({
@@ -54,7 +55,8 @@ export class MemorizationService {
         reminderDate: new Date().toISOString(),
         progress: 10,
         description: userInput.description,
-        text: userInput.text
+        text: userInput.text,
+        uid: uid,
       });
       const reminderDate: Date = memorizeItem.updateReminderDate();
       this.setReminder(documentUID, reminderDate);
@@ -103,8 +105,9 @@ export class MemorizationService {
     // TODO: Send reminder date and id to backend.
   }
 
-  private getCollectionValue(): Observable<MemorizeItemFromDB[]> {
-    return <Observable<MemorizeItemFromDB[]>>this.db.collection(MemorizationService.DB_COLLECTION_NAME, ref => ref.orderBy('date'))
+  private getCollectionValue(uid: string): Observable<MemorizeItemFromDB[]> {
+    return <Observable<MemorizeItemFromDB[]>>this.db.collection(MemorizationService.DB_COLLECTION_NAME, ref => ref.orderBy('date')
+      .where('uid', '==', uid))
       .valueChanges({ idField: 'id'})
   }
 

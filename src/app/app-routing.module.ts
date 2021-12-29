@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { IndexPageComponent } from './index-page/index-page.component';
 import { SigninComponent } from './signin/signin.component';
 import { TextMemorizationComponent } from './text-memorization/text-memorization.component';
 import { AuthGuard, redirectUnauthorizedTo } from '@angular/fire/auth-guard';

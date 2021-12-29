@@ -6,14 +6,15 @@ import { AuthProvider, GoogleAuthProvider, UserInfo } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { User } from '../user/user';
 import { filter } from 'rxjs/operators';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
+import { FirebaseError } from '@angular/fire/app/firebase';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class AuthService {
   private user$: Subject<User | undefined> = new Subject();
+  private userUID: string = '';
 
   constructor(
     private readonly afAuth: AngularFireAuth, // Inject Firebase auth service
@@ -33,19 +34,22 @@ export class AuthService {
             emailVerified: user.emailVerified,
             photoURL: user.photoURL ? user.photoURL : '',
           });
-          console.log(this.user$);
+          this.userUID = user.uid;
+
+          this.router.navigate(['/']);
         }
       })
   }
 
   public googleAuth() {
-    return this.authLogin(new GoogleAuthProvider());
+    return this.authLogin(new GoogleAuthProvider().setCustomParameters({ prompt: 'select_account' }));
   }
 
   /* Sign out */
   public signOut(): void {
     this.afAuth.signOut().then(() => {
       this.user$.next(undefined);
+      this.userUID = '';
       this.router.navigate(['login']);
     })
   }
@@ -54,17 +58,24 @@ export class AuthService {
     return this.user$;
   }
 
+  public getUserUID(): string {
+    return this.userUID;
+  }
+
   private authLogin(provider: AuthProvider): void {
     this.afAuth.signInWithPopup(provider)
-      .then((result) => {
-        this.ngZone.run(() => {
-            this.router.navigate(['/']);
-          })
-        // this.SetUserData(result.user);
-        console.log(result.user, " USER");
-      }).catch((error) => {
-        window.alert(error)
+      .catch((error) => {
+        this.errorHandler(error)
       })
+  }
+
+  private errorHandler(e: unknown): Error {
+    console.error(e);
+    const message: string = typeof e === 'object' && e !== null && e.hasOwnProperty('code')
+      ? `${(<FirebaseError>e).name}: ${(<FirebaseError>e).code}`
+      : 'Unknown error. Check console.';
+
+    return new Error(message);
   }
 }
 

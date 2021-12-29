@@ -3,22 +3,20 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AngularFireAuthModule, USE_EMULATOR as USE_AUTH_EMULATOR } from '@angular/fire/compat/auth';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TextMemorizationComponent } from './text-memorization/text-memorization.component';
-import { IndexPageComponent } from './index-page/index-page.component';
 
 import { environment } from '../environments/environment';
 import { SigninComponent } from './signin/signin.component';
-import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     TextMemorizationComponent,
-    IndexPageComponent,
     SigninComponent,
   ],
   imports: [
@@ -37,7 +35,7 @@ import { SharedModule } from './shared/shared.module';
     }),
   ],
   providers: [
-    // AuthGuard,
+    { provide: USE_AUTH_EMULATOR, useValue: environment.emulator ? ['http://localhost:9099'] : undefined} // Use emulator for development mode and testing.
   ],
   bootstrap: [AppComponent]
 })
