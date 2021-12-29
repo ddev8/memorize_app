@@ -2,10 +2,13 @@ import { FirebaseError } from '@firebase/util';
 import { BehaviorSubject, of } from 'rxjs';
 import { MemorizeItemFromDB } from '../shared/memorization.service';
 
+export const USER_UID: string = '9Corylm9Ooc9HDTsaJnEoQ5OkJe2';
+
 export const immutableItem: MemorizeItemFromDB = {
   date: '2021-12-07T08:02:28.707Z',
   description: 'Create description',
   id: 'tLTBqdnNRuGg2xhfHuXd',
+  uid: USER_UID,
   progress: 10,
   reminderDate: '2021-12-08T08:02:28.708Z',
   text: 'Create text'
@@ -18,7 +21,8 @@ export let memorize_list: MemorizeItemFromDB[] = [
     id: 'tLTBqdnNRuGg2xhfHuXd',
     progress: 10,
     reminderDate: '2021-12-08T08:02:28.708Z',
-    text: 'Create text'
+    text: 'Create text',
+    uid: USER_UID
   }
 ];
 const memorizeList: BehaviorSubject<MemorizeItemFromDB[]> = new BehaviorSubject(memorize_list);
