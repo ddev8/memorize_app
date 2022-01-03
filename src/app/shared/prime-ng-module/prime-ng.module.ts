@@ -11,6 +11,9 @@ import { DataViewModule } from 'primeng/dataview';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { MenuModule } from 'primeng/menu';
+import { AvatarModule } from 'primeng/avatar';
+import {BadgeModule} from 'primeng/badge';
 
 
 @NgModule({
@@ -25,10 +28,14 @@ import { ToastModule } from 'primeng/toast';
     ButtonModule,
     DataViewModule,
     ToastModule,
+    MenuModule,
+    AvatarModule,
+    BadgeModule,
   ],
   exports: [
     TableModule,
     MenubarModule,
+    MenuModule,
     ProgressBarModule,
     InputTextModule,
     CardModule,
@@ -36,6 +43,8 @@ import { ToastModule } from 'primeng/toast';
     DataViewModule,
     ConfirmDialogModule,
     ToastModule,
+    AvatarModule,
+    BadgeModule,
   ],
   providers: [
     ConfirmationService,

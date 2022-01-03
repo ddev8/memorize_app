@@ -1,17 +1,25 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { AngularFireAuth, AngularFireAuthModule, USE_EMULATOR as USE_AUTH_EMULATOR } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
+import { environment } from '../../environments/environment';
+import { AngularFireAuthMock } from '../mocks/firebase-auth.mock';
 import { AngularFireDatabaseMock, memorize_list } from '../mocks/firestore.mock';
 import { MemorizationService } from '../shared/memorization.service';
 import { MemorizeItem } from '../shared/memorize/memorize.model';
 import { PrimeNgModule } from '../shared/prime-ng-module/prime-ng.module';
 
 import { TextMemorizationComponent } from './text-memorization.component';
+class asdf {
+
+}
 
 describe('TextMemorizationComponent', () => {
   let component: TextMemorizationComponent;
@@ -20,8 +28,12 @@ describe('TextMemorizationComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ TextMemorizationComponent ],
-      imports: [TableModule, FormsModule, ReactiveFormsModule, PrimeNgModule, BrowserAnimationsModule],
-      providers: [{ provide: AngularFirestore, useClass: AngularFireDatabaseMock }]
+      imports: [TableModule, FormsModule, ReactiveFormsModule, PrimeNgModule, BrowserAnimationsModule, AngularFireAuthModule, RouterTestingModule],
+      providers: [
+        { provide: AngularFirestore, useClass: AngularFireDatabaseMock },
+        { provide: USE_AUTH_EMULATOR, useValue: environment.emulator ? ['http://localhost:9099'] : undefined},
+        { provide: AngularFireAuth, useClass: AngularFireAuthMock }
+      ]
     })
     .compileComponents();
   });
