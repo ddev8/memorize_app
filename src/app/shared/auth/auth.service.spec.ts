@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { AngularFireAuthMock } from 'src/app/mocks/firebase-auth.mock';
 import { AuthService } from './auth.service';
 
@@ -11,6 +12,7 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [ RouterTestingModule ],
       providers: [
         { provide: AngularFireAuth, useClass: AngularFireAuthMock }
       ]

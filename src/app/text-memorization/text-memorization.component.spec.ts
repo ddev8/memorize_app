@@ -10,6 +10,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
 import { environment } from '../../environments/environment';
+import { AngularFireAuthMock } from '../mocks/firebase-auth.mock';
 import { AngularFireDatabaseMock, memorize_list } from '../mocks/firestore.mock';
 import { MemorizationService } from '../shared/memorization.service';
 import { MemorizeItem } from '../shared/memorize/memorize.model';
@@ -31,7 +32,7 @@ describe('TextMemorizationComponent', () => {
       providers: [
         { provide: AngularFirestore, useClass: AngularFireDatabaseMock },
         { provide: USE_AUTH_EMULATOR, useValue: environment.emulator ? ['http://localhost:9099'] : undefined},
-        { provide: AngularFireAuth, useClass: asdf },
+        { provide: AngularFireAuth, useClass: AngularFireAuthMock }
       ]
     })
     .compileComponents();
