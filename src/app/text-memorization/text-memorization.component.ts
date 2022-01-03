@@ -1,6 +1,6 @@
+import { ViewportScroller } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../shared/auth/auth.service';
@@ -35,7 +35,7 @@ export class TextMemorizationComponent implements OnInit, OnDestroy {
     private readonly confirmationService: ConfirmationService,
     private readonly messageService: MessageService,
     private readonly authService: AuthService,
-    private readonly router: Router,
+    private readonly scroller: ViewportScroller,
   ) {
     this.itemForm = this.fb.group({
       text: this.fb.control({ value: "", disabled: false }, [Validators.required]),
@@ -71,7 +71,7 @@ export class TextMemorizationComponent implements OnInit, OnDestroy {
   }
 
   public editItem(memorizeItem: MemorizeItem): void {
-    this.router.navigate([], { fragment: '#memorize-form' });
+    this.scroller.scrollToAnchor("memorize-form");
     this.editMode = true;
     this.itemBeingEdited = memorizeItem;
     this.itemForm.patchValue({
