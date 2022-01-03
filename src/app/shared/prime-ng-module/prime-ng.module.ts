@@ -14,6 +14,7 @@ import { ToastModule } from 'primeng/toast';
 import { MenuModule } from 'primeng/menu';
 import { AvatarModule } from 'primeng/avatar';
 import {BadgeModule} from 'primeng/badge';
+import {SkeletonModule} from 'primeng/skeleton';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import {BadgeModule} from 'primeng/badge';
     MenuModule,
     AvatarModule,
     BadgeModule,
+    SkeletonModule,
   ],
   exports: [
     TableModule,
@@ -45,6 +47,7 @@ import {BadgeModule} from 'primeng/badge';
     ToastModule,
     AvatarModule,
     BadgeModule,
+    SkeletonModule,
   ],
   providers: [
     ConfirmationService,
