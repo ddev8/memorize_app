@@ -26,7 +26,6 @@ describe('MemorizationService', () => {
       providers: [
         // { provide: FIRESTORE_EMULATOR, useValue: environment.production ? undefined : ['localhost', 8080]} // Use emulator for development mode and testing.
         { provide: AngularFirestore, useClass: AngularFireDatabaseMock}, // Use emulator for development mode and testing.
-        {}
       ]
     });
     service = TestBed.inject(MemorizationService);

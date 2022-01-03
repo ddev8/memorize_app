@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AngularFireAuthMock } from 'src/app/mocks/firebase-auth.mock';
 import { PrimeNgModule } from '../prime-ng-module/prime-ng.module';
 
 import { NavMenuComponent } from './nav-menu.component';
@@ -13,7 +15,9 @@ describe('NavMenuComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ PrimeNgModule, RouterTestingModule.withRoutes([]), ],
       declarations: [ NavMenuComponent ],
-      providers: []
+      providers: [
+        { provide: AngularFireAuth, useClass: AngularFireAuthMock }
+      ]
     })
     .compileComponents();
   });
