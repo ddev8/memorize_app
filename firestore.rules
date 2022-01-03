@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+   match /databases/{database}/documents {
+     match /memorize_list/{memorizeItem} {
+        function isSignedIn() {
+          return request.auth != null;
+        }
+
+        function isAuthor(rsc) {
+          return rsc.data.uid == request.auth.uid;
+        }
+
+        function isAllowed(rsc) {
+          return isSignedIn() && isAuthor(rsc);
+        }
+
+        // Split writing into creation, deletion, and updating. Only an
+        // owner can create or delete a story but a writer can update
+        // story content.
+        allow write: if isSignedIn();
+        allow delete: if isAllowed(resource);
+        allow update: if isAllowed(resource)
+        allow read: if isAllowed(resource);
+     }
+   }
+}
