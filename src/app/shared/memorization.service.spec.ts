@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 
 import { MemorizationService } from './memorization.service';
 import { MemorizeItem } from './memorize/memorize.model';
-import { AngularFireDatabaseMock, memorize_list } from '../mocks/firestore.mock';
+import { AngularFireDatabaseMock, memorize_list, USER_UID } from '../mocks/firestore.mock';
 import { first } from 'rxjs/operators';
 
 let fs: AngularFirestore;
@@ -25,7 +25,7 @@ describe('MemorizationService', () => {
       ],
       providers: [
         // { provide: FIRESTORE_EMULATOR, useValue: environment.production ? undefined : ['localhost', 8080]} // Use emulator for development mode and testing.
-        { provide: AngularFirestore, useClass: AngularFireDatabaseMock} // Use emulator for development mode and testing.
+        { provide: AngularFirestore, useClass: AngularFireDatabaseMock}, // Use emulator for development mode and testing.
       ]
     });
     service = TestBed.inject(MemorizationService);
@@ -43,7 +43,7 @@ describe('MemorizationService', () => {
 
   describe('Get items', () => {
     it('Should get items from db', (done) => {
-      service.getMemorizeItems()
+      service.getMemorizeItems(USER_UID)
         .pipe(
           first()
         )
@@ -61,11 +61,11 @@ describe('MemorizationService', () => {
       const result: true | Error = service.createItem({
         description: 'Create description',
         text: 'Create text',
-      });
+      }, USER_UID);
       expect(result).toBeTruthy();
     })
     it('Should return an error', () => {
-      const result: true | Error = service.createItem(<any>undefined);
+      const result: true | Error = service.createItem(<any>undefined, USER_UID);
       expect(result).toBeInstanceOf(Error);
     })
   })

@@ -1,14 +1,16 @@
 type MemorizePlainObject = {
-  id: string,
-  text: string,
-  description: string,
-  progress: number,
-  date: string,
-  reminderDate: string,
+  id: string;
+  uid: string;
+  text: string;
+  description: string;
+  progress: number;
+  date: string;
+  reminderDate: string;
 };
 
 export class MemorizeItem {
   private readonly id: string;
+  private readonly uid: string;
   private text: string;
   private description: string;
   private progress: number;
@@ -17,6 +19,7 @@ export class MemorizeItem {
 
   constructor(setup: MemorizePlainObject) {
     this.id = setup.id;
+    this.uid = setup.uid;
     this.text = setup.text;
     this.description = setup.description;
     this.progress = setup.progress;
@@ -25,6 +28,10 @@ export class MemorizeItem {
   }
   public getId(): string {
     return this.id;
+  }
+
+  public getUID(): string {
+    return this.uid;
   }
 
   public getText(): string {
@@ -72,6 +79,7 @@ export class MemorizeItem {
   public toPlainObj(): MemorizePlainObject {
     return {
       id: this.id,
+      uid: this.uid,
       text: this.text,
       description: this.description,
       date: this.date.toISOString(),

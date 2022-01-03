@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:14.18-alpine3.14
 # Add java for firebase emulator.
 RUN apk add openjdk11
 # Install firebase tools.
@@ -13,5 +13,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 RUN npm install
+
+COPY . .
 
 EXPOSE 4200 49153 9876 9099 8080 5000 4000

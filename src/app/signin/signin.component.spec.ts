@@ -1,20 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AngularFireAuthMock } from 'src/app/mocks/firebase-auth.mock';
-import { PrimeNgModule } from '../prime-ng-module/prime-ng.module';
+import { AngularFireAuthMock } from '../mocks/firebase-auth.mock';
 
-import { NavMenuComponent } from './nav-menu.component';
+import { SigninComponent } from './signin.component';
 
-describe('NavMenuComponent', () => {
-  let component: NavMenuComponent;
-  let fixture: ComponentFixture<NavMenuComponent>;
+describe('SigninComponent', () => {
+  let component: SigninComponent;
+  let fixture: ComponentFixture<SigninComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ PrimeNgModule, RouterTestingModule.withRoutes([]), ],
-      declarations: [ NavMenuComponent ],
+      imports: [ RouterTestingModule ],
+      declarations: [ SigninComponent ],
       providers: [
         { provide: AngularFireAuth, useClass: AngularFireAuthMock }
       ]
@@ -23,7 +21,7 @@ describe('NavMenuComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NavMenuComponent);
+    fixture = TestBed.createComponent(SigninComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

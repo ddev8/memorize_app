@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../shared/auth/auth.service';
 
 import { TForm } from '../shared/forms/helper';
 import { MemorizationService } from '../shared/memorization.service';
@@ -17,18 +19,21 @@ type FormModel = {
   templateUrl: './text-memorization.component.html',
   styleUrls: ['./text-memorization.component.scss'],
 })
-export class TextMemorizationComponent implements OnInit {
+export class TextMemorizationComponent implements OnInit, OnDestroy {
   public itemForm: TForm<FormModel>;
   public editMode: boolean = false;
 
   public memorizeItems: MemorizeItem[] = [];
   private itemBeingEdited: MemorizeItem | undefined = undefined;
 
+  private readonly subscriptions: { [key: string]: Subscription; } = {};
+
   constructor(
     private readonly fb: FormBuilder,
     private readonly memorizeService: MemorizationService,
     private readonly confirmationService: ConfirmationService,
     private readonly messageService: MessageService,
+    private readonly authService: AuthService,
   ) {
     this.itemForm = this.fb.group({
       text: this.fb.control({ value: "", disabled: false }, [Validators.required]),
@@ -36,17 +41,25 @@ export class TextMemorizationComponent implements OnInit {
     }) as TForm<FormModel>;
   }
 
-  ngOnInit(): void {
-    this.memorizeService.getMemorizeItems().subscribe({
+  public ngOnInit(): void {
+    this.subscriptions.getList = this.memorizeService.getMemorizeItems(this.authService.getUserUID()).subscribe({
       next: (items: MemorizeItem[]) => {
         this.memorizeItems = items;
       }
     });
   }
 
+  public ngOnDestroy(): void {
+    for (const subs in this.subscriptions) {
+      if (this.subscriptions.hasOwnProperty(subs)) {
+        this.subscriptions[subs].unsubscribe();
+      }
+    }
+  }
+
   public createItem(): void {
     const formValue: FormModel = <FormModel>this.itemForm.value;
-    const result: boolean | Error = this.memorizeService.createItem(formValue)
+    const result: boolean | Error = this.memorizeService.createItem(formValue, this.authService.getUserUID())
 
     if (result === true) {
       this.itemForm.reset();
