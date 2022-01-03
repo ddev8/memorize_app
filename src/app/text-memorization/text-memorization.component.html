@@ -18,7 +18,7 @@
     </form>
   </p-card>
   <div class="card col-12">
-    <p-dataView #dv [value]="memorizeItems" [paginator]="true" [rows]="9" filterBy="value"
+    <p-dataView #dv *ngIf="memorizeItems.length > 0; else skeleton" [value]="memorizeItems" [paginator]="true" [rows]="9" filterBy="value"
          layout="grid" [alwaysShowPaginator]="false">
         <ng-template let-memorize pTemplate="gridItem">
             <div class="col-12 md:col-4">
@@ -43,3 +43,28 @@
 </div>
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
 <p-toast position="top-right"></p-toast>
+
+<ng-template #skeleton>
+  <p-dataView #dv [value]="[0, 0, 0, 0, 0, 0, 0, 0, 0]" [paginator]="true" [rows]="9" filterBy="value"
+    layout="grid" [alwaysShowPaginator]="false">
+  <ng-template let-memorize pTemplate="gridItem">
+      <div class="col-12 md:col-4">
+          <div class="memorize-grid-item card">
+              <div class="memorize-grid-item-top">
+                  <div>
+                      <i class="pi pi-times item-icon"></i>
+                  </div>
+                  <div>
+                      <i class="pi pi-pencil item-icon"></i>
+                  </div>
+              </div>
+              <div class="memorize-grid-item-content">
+                <div class="memorize-name"><p-skeleton width="30%" height="2rem"></p-skeleton></div>
+                <div class="memorize-description"><p-skeleton width="50%" height="2rem"></p-skeleton></div>
+                <p-skeleton width="100%" height="2rem"></p-skeleton>
+              </div>
+          </div>
+      </div>
+  </ng-template>
+  </p-dataView>
+</ng-template>

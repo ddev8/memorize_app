@@ -44,11 +44,12 @@ export class TextMemorizationComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.subscriptions.getList = this.memorizeService.getMemorizeItems(this.authService.getUserUID()).subscribe({
-      next: (items: MemorizeItem[]) => {
-        this.memorizeItems = items;
-      }
-    });
+    this.subscriptions.getList = this.memorizeService.getMemorizeItems(this.authService.getUserUID())
+      .subscribe({
+        next: (items: MemorizeItem[]) => {
+          this.memorizeItems = items;
+        }
+      });
   }
 
   public ngOnDestroy(): void {
