@@ -50,21 +50,21 @@ describe('TextMemorizationComponent', () => {
 
   describe('Input', () => {
     it('Should render value', () => {
-      const inputValue: DebugElement = fixture.debugElement.query(By.css('.new-item__value'));
+      const inputValue: DebugElement = fixture.debugElement.query(By.css('.item-form__value'));
       expect(inputValue).toBeTruthy();
     })
     it('Should render description', () => {
-      const descriptionValue: DebugElement = fixture.debugElement.query(By.css('.new-item__description'));
+      const descriptionValue: DebugElement = fixture.debugElement.query(By.css('.item-form__description'));
       expect(descriptionValue).toBeTruthy();
     })
     it('Should render \'Memorize\' button', () => {
-      const memorizeBtn: DebugElement = fixture.debugElement.query(By.css('.new-item__save'));
+      const memorizeBtn: DebugElement = fixture.debugElement.query(By.css('.item-form__save'));
       expect(memorizeBtn).toBeTruthy();
     })
     it('Should call saveItem method', fakeAsync(() => {
       spyOn(component, "createItem");
 
-      const inputValue: DebugElement = fixture.debugElement.query(By.css('.new-item__value'));
+      const inputValue: DebugElement = fixture.debugElement.query(By.css('.item-form__value'));
       inputValue.nativeElement.value = "Testing value";
       fixture.detectChanges();
       const form: DebugElement = fixture.debugElement.query(By.css('form'));
