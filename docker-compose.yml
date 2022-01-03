@@ -18,11 +18,15 @@ services:
     ports:
       - "4200:4200"
       - "49153:49153"
+      - "8080:8080"
+      - "9099:9099"
+      - "5000:5000"
+      - "4000:4000"
     container_name: frontend-aio
     volumes:
        - ./:/usr/src/app
        - /usr/src/app/node_modules
-    command: npm run start
+    command: [sh, -c, "npm run firebase:emulator:start & npm run start"]
   frontend-test-aio:
     build:
       context: ./
