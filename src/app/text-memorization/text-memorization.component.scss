@@ -1,8 +1,15 @@
-.new-item form {
-  .new-item__value,
-  .new-item__description,
-  .new-item__save {
+.item-form form {
+  .item-form__value,
+  .item-form__description,
+  .item-form__save {
     width: 100%;
+  }
+  .item-form__update {
+    width: 80%;
+  }
+  .item-form__cancel {
+    margin-left: 10%;
+    width: 10%;
   }
 }
 
@@ -10,7 +17,7 @@
   .p-progressbar {
     width: 50vw;
   }
-  .new-item form .form-control {
+  .item-form form .form-control {
     margin-top: 15px;
   }
 }

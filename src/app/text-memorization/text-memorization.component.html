@@ -1,17 +1,19 @@
 <div class="grid">
-  <p-card class="new-item col-12">
-    <form [formGroup]="itemForm" (ngSubmit)="editMode ? updateItem() : createItem()" class="grid jc-around">
+  <p-card class="item-form col-12">
+    <form id="memorize-form" [formGroup]="itemForm" (ngSubmit)="editMode ? updateItem() : createItem()" class="grid jc-around">
       <span class="form-control p-float-label col-12 md:col-5 lg:col-5">
-        <input class="new-item__value" type="text" pInputText formControlName="text">
+        <input class="item-form__value" type="text" pInputText formControlName="text">
         <label for="float-input">Text</label>
       </span>
       <span class="form-control p-float-label col-12 md:col-5 lg:col-5">
-        <input class="new-item__description" type="text" pInputText formControlName="description">
+        <input class="item-form__description" type="text" pInputText formControlName="description">
         <label for="float-input">Description</label>
       </span>
       <div class="form-control col-12 md:col-2 lg:col-2">
-        <button class="new-item__save" pButton type="submit" [label]="editMode ? 'Update' : 'Memorize'" icon="pi pi-check" iconPos="right"
+        <button [ngClass]="editMode ? 'item-form__update' : 'item-form__save'" pButton type="submit" [label]="editMode ? 'Update' : 'Memorize'" icon="pi pi-check" iconPos="right"
           [disabled]="!itemForm.valid"></button>
+        <button *ngIf="editMode" class="item-form__cancel" pButton icon="pi pi-times" iconPos="right"
+          (click)="clearUpdatingForm()"></button>
       </div>
     </form>
   </p-card>
