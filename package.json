@@ -28,8 +28,12 @@
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
     "@angular/service-worker": "~12.2.0",
+<<<<<<< HEAD
     "@ngrx/store": "^13.0.2",
     "firebase": "^9.5.0",
+=======
+    "firebase": "^9.6.3",
+>>>>>>> develop
     "primeflex": "^3.1.0",
     "primeicons": "^4.1.0",
     "primeng": "^12.2.1",
