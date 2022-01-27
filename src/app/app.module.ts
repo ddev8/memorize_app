@@ -7,26 +7,21 @@ import { AngularFireAuthModule, USE_EMULATOR as USE_AUTH_EMULATOR } from '@angul
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TextMemorizationComponent } from './text-memorization/text-memorization.component';
 
 import { environment } from '../environments/environment';
-import { SigninComponent } from './signin/signin.component';
-import { SharedModule } from './shared/shared.module';
+import { CoreModule } from './core/core.module';
+import { MemorizeModule } from './memorize/memorize.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TextMemorizationComponent,
-    SigninComponent,
   ],
   imports: [
-    AngularFireAuthModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule,
+    CoreModule,
+    MemorizeModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable

@@ -7,7 +7,7 @@ import { AngularFirestore, AngularFirestoreModule, USE_EMULATOR as FIRESTORE_EMU
 import { environment } from 'src/environments/environment';
 
 import { MemorizationService } from './memorization.service';
-import { MemorizeItem } from './memorize/memorize.model';
+import { MemorizeItem } from '../models/memorize.model';
 import { AngularFireDatabaseMock, memorize_list, USER_UID } from '../mocks/firestore.mock';
 import { first } from 'rxjs/operators';
 
