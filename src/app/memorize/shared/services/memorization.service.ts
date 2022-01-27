@@ -4,7 +4,7 @@ import { FirebaseError } from '@firebase/util'
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { MemorizeItem } from './memorize/memorize.model';
+import { MemorizeItem } from '../models/memorize.model';
 
 export type MemorizeItemFromDB = {
   id: string;
