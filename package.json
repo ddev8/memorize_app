@@ -12,7 +12,7 @@
     "docker:frontend": "docker-compose up frontend-aio",
     "docker:test": "docker-compose up frontend-test-aio",
     "build:upload": "npm run build && firebase deploy",
-    "firebase:emulator:start": "firebase emulators:start --import ./src/app/mocks/firestore",
+    "firebase:emulator:start": "firebase emulators:start --import ./src/app/core/mocks/firestore",
     "lint": "ng lint"
   },
   "private": true,

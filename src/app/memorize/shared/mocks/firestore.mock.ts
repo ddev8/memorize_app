@@ -1,6 +1,6 @@
 import { FirebaseError } from '@firebase/util';
 import { BehaviorSubject, of } from 'rxjs';
-import { MemorizeItemFromDB } from '../shared/memorization.service';
+import { MemorizeItemFromDB } from '../services/memorization.service';
 
 export const USER_UID: string = '9Corylm9Ooc9HDTsaJnEoQ5OkJe2';
 
