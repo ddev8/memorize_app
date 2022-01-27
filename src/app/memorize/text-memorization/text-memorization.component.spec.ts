@@ -7,19 +7,21 @@ import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { CardModule } from 'primeng/card';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DataViewModule } from 'primeng/dataview';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { SkeletonModule } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
-import { environment } from '../../environments/environment';
-import { AngularFireAuthMock } from '../mocks/firebase-auth.mock';
-import { AngularFireDatabaseMock, memorize_list } from '../mocks/firestore.mock';
-import { MemorizationService } from '../shared/memorization.service';
-import { MemorizeItem } from '../shared/memorize/memorize.model';
-import { PrimeNgModule } from '../shared/prime-ng-module/prime-ng.module';
+import { ToastModule } from 'primeng/toast';
+import { environment } from '../../../environments/environment';
+
+import { AngularFireAuthMock } from '../../core/mocks/firebase-auth.mock';
+
+import { AngularFireDatabaseMock } from '../shared/mocks/firestore.mock';
 
 import { TextMemorizationComponent } from './text-memorization.component';
-class asdf {
-
-}
 
 describe('TextMemorizationComponent', () => {
   let component: TextMemorizationComponent;
@@ -28,11 +30,22 @@ describe('TextMemorizationComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ TextMemorizationComponent ],
-      imports: [TableModule, FormsModule, ReactiveFormsModule, PrimeNgModule, BrowserAnimationsModule, AngularFireAuthModule, RouterTestingModule],
+      imports: [
+        TableModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, AngularFireAuthModule, RouterTestingModule,
+        // PrimeNG
+        CardModule,
+        DataViewModule,
+        ProgressBarModule,
+        ConfirmDialogModule,
+        ToastModule,
+        SkeletonModule
+      ],
       providers: [
         { provide: AngularFirestore, useClass: AngularFireDatabaseMock },
         { provide: USE_AUTH_EMULATOR, useValue: environment.emulator ? ['http://localhost:9099'] : undefined},
-        { provide: AngularFireAuth, useClass: AngularFireAuthMock }
+        { provide: AngularFireAuth, useClass: AngularFireAuthMock },
+        ConfirmationService,
+        MessageService,
       ]
     })
     .compileComponents();
