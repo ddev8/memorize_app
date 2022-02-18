@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FirebaseError } from '@firebase/util'
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { addMemorizeItem, loadMemorizeItemsSuccess, removeMemorizeItem } from '../../state';
 
 import { MemorizeItem } from '../models/memorize.model';
 
@@ -28,7 +30,8 @@ export class MemorizationService {
   private static readonly DB_COLLECTION_NAME: string = 'memorize_list';
 
   constructor(
-    private readonly db: AngularFirestore
+    private readonly db: AngularFirestore,
+    private readonly store: Store,
   ) { }
 
   public getMemorizeItems(uid: string): Observable<MemorizeItem[]> {
@@ -39,6 +42,7 @@ export class MemorizationService {
             const items: MemorizeItem[] = res.map((e: MemorizeItemFromDB): MemorizeItem => {
               return new MemorizeItem(e);
             });
+            this.store.dispatch(loadMemorizeItemsSuccess({ memorizeItems: res }))
 
             return items;
           }
@@ -64,6 +68,7 @@ export class MemorizationService {
       this.db.collection(MemorizationService.DB_COLLECTION_NAME)
         .doc(documentUID)
         .set(memorizeItem.toPlainObj());
+      this.store.dispatch(addMemorizeItem({ memorizeItem: memorizeItem.toPlainObj() }))
 
       return true;
     } catch(e: unknown) {
@@ -94,6 +99,7 @@ export class MemorizationService {
       this.db.collection(MemorizationService.DB_COLLECTION_NAME)
         .doc(memorizeItem.getId())
         .delete();
+      this.store.dispatch(removeMemorizeItem({ memorizeItemId: memorizeItem.getId() }));
 
       return true;
     } catch(e: unknown) {
