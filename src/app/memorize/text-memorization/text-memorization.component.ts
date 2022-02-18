@@ -8,6 +8,9 @@ import { AuthService } from '../../core/auth/auth.service';
 import { TForm } from '../../shared/forms/helper';
 import { MemorizationService } from '../shared/services/memorization.service';
 import { MemorizeItem } from '../shared/models/memorize.model';
+import { Store } from '@ngrx/store';
+
+import { loadMemorizeItems, getMemorizeItems, addMemorizeItem } from '../state';
 
 
 type FormModel = {
@@ -36,7 +39,11 @@ export class TextMemorizationComponent implements OnInit, OnDestroy {
     private readonly messageService: MessageService,
     private readonly authService: AuthService,
     private readonly scroller: ViewportScroller,
+    private store: Store,
   ) {
+    this.store.dispatch(loadMemorizeItems());
+    this.subscriptions.afsdfa = this.store.select(getMemorizeItems)
+      .subscribe((val) => console.log(val));
     this.itemForm = this.fb.group({
       text: this.fb.control({ value: "", disabled: false }, [Validators.required]),
       description: this.fb.control({ value: "", disabled: false }, [Validators.required]),
