@@ -1,19 +1,32 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import { AuthState, loadCheckAuth, loadSignInWithGoogle, selectAuthLoading, selectAuthUser } from '../../store';
 
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss']
 })
-export class SigninComponent {
+export class SigninComponent implements OnInit {
+  public authLoading$: Observable<boolean>;
 
   constructor(
-    private readonly authService: AuthService
-  ) { }
+    private readonly store: Store
+  ) {
+    this.authLoading$ = this.store.select(selectAuthLoading);
+  }
+
+  public ngOnInit(): void {
+    // setTimeout(() => {
+      this.store.dispatch(loadCheckAuth());
+    // }, 6000)
+    // this.store.dispatch(loadCheckAuth());
+  }
 
   public signInWithGoogle(): void {
-    this.authService.googleAuth();
+    this.store.dispatch(loadSignInWithGoogle());
   }
 
 }

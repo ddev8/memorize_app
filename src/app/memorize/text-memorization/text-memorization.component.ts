@@ -51,12 +51,12 @@ export class TextMemorizationComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.subscriptions.getList = this.memorizeService.getMemorizeItems(this.authService.getUserUID())
-      .subscribe({
-        next: (items: MemorizeItem[]) => {
-          this.memorizeItems = items;
-        }
-      });
+    // this.subscriptions.getList = this.memorizeService.getMemorizeItems(this.authService.getUserUID())
+    //   .subscribe({
+    //     next: (items: MemorizeItem[]) => {
+    //       this.memorizeItems = items;
+    //     }
+    //   });
   }
 
   public ngOnDestroy(): void {
@@ -68,14 +68,14 @@ export class TextMemorizationComponent implements OnInit, OnDestroy {
   }
 
   public createItem(): void {
-    const formValue: FormModel = <FormModel>this.itemForm.value;
-    const result: boolean | Error = this.memorizeService.createItem(formValue, this.authService.getUserUID())
+    // const formValue: FormModel = <FormModel>this.itemForm.value;
+    // const result: boolean | Error = this.memorizeService.createItem(formValue, this.authService.getUserUID())
 
-    if (result === true) {
-      this.itemForm.reset();
-    } else if (result instanceof Error) {
-      this.showToastError(result);
-    }
+    // if (result === true) {
+    //   this.itemForm.reset();
+    // } else if (result instanceof Error) {
+    //   this.showToastError(result);
+    // }
   }
 
   public editItem(memorizeItem: MemorizeItem): void {
