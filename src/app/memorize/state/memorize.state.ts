@@ -1,9 +1,9 @@
 import { MemorizePlainObject } from "../shared/models/memorize.model";
 
 export interface MemorizeState {
-  memorizeItems: MemorizePlainObject[];
+  items: MemorizePlainObject[];
 }
 
 export const initialState: MemorizeState = {
-  memorizeItems: [],
+  items: [],
 };

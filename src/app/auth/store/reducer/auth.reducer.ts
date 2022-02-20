@@ -7,27 +7,27 @@ import { loadSignOut, loadSignOutFailure, loadSignOutSuccess } from '../actions/
 
 export const authFeatureKey = 'auth';
 
-export interface State {
+export interface AuthState {
   user: User | null;
   loading: boolean;
   error: string | null;
 }
 
-export const initialState: State = {
+export const initialState: AuthState = {
   user: null,
   loading: false,
   error: null
 };
 
-export const reducer = createReducer(
+export const AuthReducer = createReducer(
   initialState,
-  on(loadCheckAuth, (state): State => ({ ...state, loading: true})),
-  on(loadCheckAuthSuccess, (state, action): State => ({ ...state, loading: false, user: action.data.user })),
-  on(loadCheckAuthFailure, (state, action): State => ({...state, loading: false, error: action.error})),
-  on(loadSignInWithGoogle, (state): State => ({ ...state, loading: true})),
-  on(loadSignInWithGoogleSuccess, (state, action): State => ({ ...state, loading: false, user: action.data.user })),
-  on(loadSignInWithGoogleFailure, (state, action): State => ({...state, loading: false, error: action.error})),
-  on(loadSignOut, (state): State => ({ ...state, loading: true})),
-  on(loadSignOutSuccess, (state, action): State => ({ ...state, loading: false })),
-  on(loadSignOutFailure, (state, action): State => ({...state, loading: false, error: action.error})),
+  on(loadCheckAuth, (state): AuthState => ({ ...state, loading: true})),
+  on(loadCheckAuthSuccess, (state, action): AuthState => ({ ...state, loading: false, user: action.data.user })),
+  on(loadCheckAuthFailure, (state, action): AuthState => ({...state, loading: false, error: action.error})),
+  on(loadSignInWithGoogle, (state): AuthState => ({ ...state, loading: true})),
+  on(loadSignInWithGoogleSuccess, (state, action): AuthState => ({ ...state, loading: false, user: action.data.user })),
+  on(loadSignInWithGoogleFailure, (state, action): AuthState => ({...state, loading: false, error: action.error})),
+  on(loadSignOut, (state): AuthState => ({ ...state, loading: true})),
+  on(loadSignOutSuccess, (state): AuthState => ({ ...state, loading: false })),
+  on(loadSignOutFailure, (state, action): AuthState => ({...state, loading: false, error: action.error})),
 );

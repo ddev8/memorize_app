@@ -3,7 +3,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../../core/auth/auth.service';
 
 import { TForm } from '../../shared/forms/helper';
 import { MemorizationService } from '../shared/services/memorization.service';
@@ -11,6 +10,7 @@ import { MemorizeItem } from '../shared/models/memorize.model';
 import { Store } from '@ngrx/store';
 
 import { loadMemorizeItems, getMemorizeItems, addMemorizeItem } from '../state';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 
 type FormModel = {
