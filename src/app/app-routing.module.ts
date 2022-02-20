@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SigninComponent } from './core/signin/signin.component';
+import { SigninComponent } from './auth/components/signin/signin.component';
 import { TextMemorizationComponent } from './memorize/text-memorization/text-memorization.component';
 import { AuthGuard, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 
