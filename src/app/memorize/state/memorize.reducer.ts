@@ -4,20 +4,20 @@ import { initialState, MemorizeState } from "./memorize.state";
 
 const memorizeReducer = createReducer(
   initialState,
-  on(MemorizeActions.loadMemorizeItems, (state) => ({
+  on(MemorizeActions.loadMemorizeItems, (state): MemorizeState => ({
     ...state
   })),
   on(MemorizeActions.addMemorizeItem, (state, { memorizeItem }): MemorizeState => ({
     ...state,
-    memorizeItems: [...state.memorizeItems, memorizeItem]
+    items: [...state.items, memorizeItem]
   })),
   on(MemorizeActions.removeMemorizeItem, (state, { memorizeItemId }): MemorizeState => ({
     ...state,
-    memorizeItems: [...state.memorizeItems.filter((item) => item.id === memorizeItemId)]
+    items: [...state.items.filter((item) => item.id === memorizeItemId)]
   })),
   on(MemorizeActions.loadMemorizeItemsSuccess, (state, { memorizeItems }): MemorizeState => ({
     ...state,
-    memorizeItems: memorizeItems
+    items: memorizeItems
   }))
   // on(MemorizeActions.fetchMenuSuccess, (state, { menuItems }) => ({
   //   ...state,

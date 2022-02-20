@@ -1,5 +1,7 @@
+import { AuthState } from 'src/app/auth/store/reducer/auth.reducer';
 import { MemorizeState } from '../../memorize/state';
 
-export interface State {
+export interface AppState {
   memorizeItems: MemorizeState;
+  auth: AuthState;
 }
