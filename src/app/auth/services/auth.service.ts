@@ -4,10 +4,11 @@ import {
 } from '@angular/fire/compat/auth';
 import { AuthProvider, GoogleAuthProvider, UserInfo } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { User } from '../models/user';
 import { filter } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { FirebaseError } from '@angular/fire/app/firebase';
+
+import { User } from 'src/app/auth/models/user';
 
 @Injectable({
   providedIn: 'root'

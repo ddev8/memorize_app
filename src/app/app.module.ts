@@ -16,6 +16,7 @@ import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 import { CoreModule } from './core/core.module';
 import { MemorizeModule } from './memorize/memorize.module';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { MemorizeModule } from './memorize/memorize.module';
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
+    AuthModule,
     MemorizeModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,

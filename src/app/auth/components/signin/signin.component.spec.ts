@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AngularFireAuthMock } from '../mocks/firebase-auth.mock';
+import { AngularFireAuthMock } from '../../../core/mocks/firebase-auth.mock';
 
 import { SigninComponent } from './signin.component';
 
