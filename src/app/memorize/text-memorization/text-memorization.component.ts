@@ -11,8 +11,9 @@ import { ActionsSubject, Store } from '@ngrx/store';
 
 // import { loadMemorizeItems, getMemorizeItems, addMemorizeItem } from '../state';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { createMemorizeItem, createMemorizeItemFailure, deleteMemorizeItem, deleteMemorizeItemFailure, loadItems, selectMemorizeItems, updateMemorizeItem, updateMemorizeItemFailure } from '../store';
+import { createMemorizeItem, createMemorizeItemFailure, createMemorizeItemSuccess, deleteMemorizeItem, deleteMemorizeItemFailure, loadItems, selectMemorizeItems, updateMemorizeItem, updateMemorizeItemFailure, updateMemorizeItemSuccess } from '../store';
 import { ofType } from '@ngrx/effects';
+import { first } from 'rxjs/operators';
 
 
 type FormModel = {
@@ -33,7 +34,7 @@ export class TextMemorizationComponent implements OnInit, OnDestroy {
   public memorizeItems$: Observable<MemorizeItem[]>;
   private itemBeingEdited: MemorizeItem | undefined = undefined;
 
-  private readonly subscriptions: { [key: string]: Subscription; } = {};
+  private readonly subscriptions: Subscription = new Subscription();
 
   constructor(
     private readonly fb: FormBuilder,
@@ -54,43 +55,34 @@ export class TextMemorizationComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    // this.subscriptions.getList = this.memorizeService.getMemorizeItems(this.authService.getUserUID())
-    //   .subscribe({
-    //     next: (items: MemorizeItem[]) => {
-    //       this.memorizeItems = items;
-    //     }
-    //   });
-    // this.actionsSubj.pipe(
-    //   ofType(createMemorizeItemFailure),
-    //   ofType(updateMemorizeItemFailure),
-    //   ofType(deleteMemorizeItemFailure)
-    // )
-    // .subscribe((payload) => {
-    //   this.showToastError(payload.error);
-    // })
+    this.subscriptions.add(
+      this.actionsSubj.pipe(
+        ofType(
+          deleteMemorizeItemFailure,
+          createMemorizeItemFailure,
+          updateMemorizeItemFailure
+        )
+      )
+      .subscribe((payload) => {
+        this.showToastError(payload.error);
+      })
+    )
   }
 
   public ngOnDestroy(): void {
-    for (const subs in this.subscriptions) {
-      if (this.subscriptions.hasOwnProperty(subs)) {
-        this.subscriptions[subs].unsubscribe();
-      }
-    }
+    this.subscriptions.unsubscribe();
   }
 
   public createItem(): void {
     const formValue: FormModel = <FormModel>this.itemForm.value;
 
     this.store.dispatch(createMemorizeItem({ item: formValue }))
-    // this.store.select(createMemorizeItemsSuccess)
-    //   .subscribe()
-    // const result: boolean | Error = this.memorizeService.createItem(formValue, this.authService.getUserUID())
-
-    // if (result === true) {
-    //   this.itemForm.reset();
-    // } else if (result instanceof Error) {
-    //   this.showToastError(result);
-    // }
+    this.subscriptions.add(
+      this.actionsSubj.pipe(
+        ofType(createMemorizeItemSuccess),
+        first(),
+      ).subscribe(() => this.itemForm.reset())
+    )
   }
 
   public editItem(memorizeItem: MemorizeItem): void {
@@ -111,23 +103,18 @@ export class TextMemorizationComponent implements OnInit, OnDestroy {
     this.itemBeingEdited.setDescription(formValue.description);
     this.itemBeingEdited.setText(formValue.text);
 
-    this.store.dispatch(updateMemorizeItem({ item: this.itemBeingEdited }))
-
-    // const result: boolean | Error = this.memorizeService.updateItem(this.itemBeingEdited);
-    // if (result instanceof Error) {
-    //   this.showToastError(result);
-    // } else if (result === true) {
-    //   this.clearUpdatingForm();
-    // }
+    this.store.dispatch(updateMemorizeItem({ item: this.itemBeingEdited }));
+    this.subscriptions.add(
+      this.actionsSubj.pipe(
+        ofType(updateMemorizeItemSuccess),
+        first(),
+      ).subscribe(() => this.clearUpdatingForm())
+    )
   }
 
   public removeItem(memorizeItem: MemorizeItem): void {
     this.confirm('Delete item?', () => {
       this.store.dispatch(deleteMemorizeItem({ item: memorizeItem }))
-      // const result: boolean | Error = this.memorizeService.deleteItem(memorizeItem);
-      // if (result instanceof Error) {
-      //   this.showToastError(result);
-      // }
     })
   }
 
