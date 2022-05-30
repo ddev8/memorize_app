@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { catchError, filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { User } from 'src/app/auth/models/user';
 import { selectAuthUser } from 'src/app/auth/store';
+import { MemorizeItem } from '../../shared/models/memorize.model';
 import { MemorizationService } from '../../shared/services/memorization.service';
 import { loadItems, loadItemsFailure, loadItemsSuccess } from '../actions';
 import { MemorizeState } from '../reducer/memorize.reducer';
@@ -33,7 +34,7 @@ export class LoadItemsEffects {
         return this.memorizationService.getMemorizeItems(user.uid)
           .pipe(
             map((items) => {
-              return loadItemsSuccess({ data: { items }})
+              return loadItemsSuccess({ items })
             }),
             catchError((error) => of(loadItemsFailure({ error })))
           )

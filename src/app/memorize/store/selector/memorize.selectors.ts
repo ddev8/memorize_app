@@ -6,7 +6,7 @@ const selectMemorizeItemFeature = createFeatureSelector<MemorizeState>(memorizeF
 
 export const selectMemorizeItems = createSelector(
   selectMemorizeItemFeature,
-  (state: MemorizeState): MemorizeItem[] => state.items
+  (state: MemorizeState): MemorizeItem[] => state.items.map((i) => new MemorizeItem(i))
 );
 export const selectMemorizeItemLoading = createSelector(
   selectMemorizeItemFeature,
