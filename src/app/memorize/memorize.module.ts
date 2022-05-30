@@ -16,6 +16,8 @@ import { TextMemorizationComponent } from './text-memorization/text-memorization
 import { MemorizationService } from './shared/services/memorization.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
+import { EffectsModule } from '@ngrx/effects';
+import { LoadItemsEffects } from './store';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { InputTextModule } from 'primeng/inputtext';
     ProgressBarModule,
     ConfirmDialogModule,
     ToastModule,
-    SkeletonModule
+    SkeletonModule,
+    EffectsModule.forFeature([LoadItemsEffects])
   ],
   providers: [
     MemorizationService,

@@ -1,10 +1,10 @@
 import { ActionReducerMap, MetaReducer } from "@ngrx/store";
 import { AppState } from "./core.state";
-import * as MemorizeReducer from "../../memorize/state/memorize.reducer";
 import { AuthReducer } from "src/app/auth/store";
+import { MemorizeReducer } from "src/app/memorize/store";
 
 export const reducers: ActionReducerMap<AppState> = {
-  memorizeItems: MemorizeReducer.reducer,
+  memorizeItems: MemorizeReducer,
   auth: AuthReducer,
 };
 

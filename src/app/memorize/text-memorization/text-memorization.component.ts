@@ -2,15 +2,16 @@ import { ViewportScroller } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { TForm } from '../../shared/forms/helper';
 import { MemorizationService } from '../shared/services/memorization.service';
 import { MemorizeItem } from '../shared/models/memorize.model';
 import { Store } from '@ngrx/store';
 
-import { loadMemorizeItems, getMemorizeItems, addMemorizeItem } from '../state';
+// import { loadMemorizeItems, getMemorizeItems, addMemorizeItem } from '../state';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { loadItems, selectMemorizeItems } from '../store';
 
 
 type FormModel = {
@@ -28,6 +29,7 @@ export class TextMemorizationComponent implements OnInit, OnDestroy {
   public editMode: boolean = false;
 
   public memorizeItems: MemorizeItem[] = [];
+  public memorizeItems$: Observable<MemorizeItem[]>;
   private itemBeingEdited: MemorizeItem | undefined = undefined;
 
   private readonly subscriptions: { [key: string]: Subscription; } = {};
@@ -41,9 +43,9 @@ export class TextMemorizationComponent implements OnInit, OnDestroy {
     private readonly scroller: ViewportScroller,
     private store: Store,
   ) {
-    this.store.dispatch(loadMemorizeItems());
-    this.subscriptions.afsdfa = this.store.select(getMemorizeItems)
-      .subscribe((val) => console.log(val));
+    this.store.dispatch(loadItems());
+    // this.store.dispatch(loadMemorizeItems());
+    this.memorizeItems$ = this.store.select(selectMemorizeItems)
     this.itemForm = this.fb.group({
       text: this.fb.control({ value: "", disabled: false }, [Validators.required]),
       description: this.fb.control({ value: "", disabled: false }, [Validators.required]),
