@@ -17,7 +17,7 @@ import { MemorizationService } from './shared/services/memorization.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
 import { EffectsModule } from '@ngrx/effects';
-import { LoadItemsEffects } from './store';
+import { CreateMemorizeItemEffects, DeleteMemorizeItemEffects, LoadItemsEffects, UpdateMemorizeItemEffects } from './store';
 
 @NgModule({
   declarations: [
@@ -37,7 +37,7 @@ import { LoadItemsEffects } from './store';
     ConfirmDialogModule,
     ToastModule,
     SkeletonModule,
-    EffectsModule.forFeature([LoadItemsEffects])
+    EffectsModule.forFeature([LoadItemsEffects, CreateMemorizeItemEffects, UpdateMemorizeItemEffects, DeleteMemorizeItemEffects])
   ],
   providers: [
     MemorizationService,
