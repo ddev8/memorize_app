@@ -85,8 +85,6 @@ export class MemorizationService {
     return from(deletePromise)
       .pipe(
         map((): any => {
-          throw new Error('sadfas');
-
           return memorizeItem.toPlainObj();
         }),
         catchError((e): Observable<any> => {
