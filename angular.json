@@ -122,6 +122,6 @@
   },
   "defaultProject": "all-in-one",
   "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
+    "defaultCollection": "@ngrx/schematics"
   }
 }
