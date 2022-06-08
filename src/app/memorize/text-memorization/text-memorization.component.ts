@@ -2,12 +2,18 @@ import { ViewportScroller } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Subscription } from 'rxjs';
-import { AuthService } from '../../core/auth/auth.service';
+import { Observable, Subscription } from 'rxjs';
 
 import { TForm } from '../../shared/forms/helper';
 import { MemorizationService } from '../shared/services/memorization.service';
 import { MemorizeItem } from '../shared/models/memorize.model';
+import { ActionsSubject, Store } from '@ngrx/store';
+
+// import { loadMemorizeItems, getMemorizeItems, addMemorizeItem } from '../state';
+import { AuthService } from 'src/app/auth/services/auth.service';
+import { createMemorizeItem, createMemorizeItemFailure, createMemorizeItemSuccess, deleteMemorizeItem, deleteMemorizeItemFailure, loadItems, selectMemorizeItems, updateMemorizeItem, updateMemorizeItemFailure, updateMemorizeItemSuccess } from '../store';
+import { ofType } from '@ngrx/effects';
+import { first } from 'rxjs/operators';
 
 
 type FormModel = {
@@ -25,9 +31,10 @@ export class TextMemorizationComponent implements OnInit, OnDestroy {
   public editMode: boolean = false;
 
   public memorizeItems: MemorizeItem[] = [];
+  public memorizeItems$: Observable<MemorizeItem[]>;
   private itemBeingEdited: MemorizeItem | undefined = undefined;
 
-  private readonly subscriptions: { [key: string]: Subscription; } = {};
+  private readonly subscriptions: Subscription = new Subscription();
 
   constructor(
     private readonly fb: FormBuilder,
@@ -36,7 +43,11 @@ export class TextMemorizationComponent implements OnInit, OnDestroy {
     private readonly messageService: MessageService,
     private readonly authService: AuthService,
     private readonly scroller: ViewportScroller,
+    private store: Store,
+    private actionsSubj: ActionsSubject,
   ) {
+    this.store.dispatch(loadItems());
+    this.memorizeItems$ = this.store.select(selectMemorizeItems)
     this.itemForm = this.fb.group({
       text: this.fb.control({ value: "", disabled: false }, [Validators.required]),
       description: this.fb.control({ value: "", disabled: false }, [Validators.required]),
@@ -44,37 +55,40 @@ export class TextMemorizationComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.subscriptions.getList = this.memorizeService.getMemorizeItems(this.authService.getUserUID())
-      .subscribe({
-        next: (items: MemorizeItem[]) => {
-          this.memorizeItems = items;
-        }
-      });
+    this.subscriptions.add(
+      this.actionsSubj.pipe(
+        ofType(
+          deleteMemorizeItemFailure,
+          createMemorizeItemFailure,
+          updateMemorizeItemFailure
+        )
+      )
+      .subscribe((payload) => {
+        this.showToastError(payload.error);
+      })
+    )
   }
 
   public ngOnDestroy(): void {
-    for (const subs in this.subscriptions) {
-      if (this.subscriptions.hasOwnProperty(subs)) {
-        this.subscriptions[subs].unsubscribe();
-      }
-    }
+    this.subscriptions.unsubscribe();
   }
 
   public createItem(): void {
     const formValue: FormModel = <FormModel>this.itemForm.value;
-    const result: boolean | Error = this.memorizeService.createItem(formValue, this.authService.getUserUID())
 
-    if (result === true) {
-      this.itemForm.reset();
-    } else if (result instanceof Error) {
-      this.showToastError(result);
-    }
+    this.store.dispatch(createMemorizeItem({ item: formValue }))
+    this.subscriptions.add(
+      this.actionsSubj.pipe(
+        ofType(createMemorizeItemSuccess),
+        first(),
+      ).subscribe(() => this.itemForm.reset())
+    )
   }
 
   public editItem(memorizeItem: MemorizeItem): void {
     this.scroller.scrollToAnchor("memorize-form");
     this.editMode = true;
-    this.itemBeingEdited = memorizeItem;
+    this.itemBeingEdited = new MemorizeItem(memorizeItem.toPlainObj());
     this.itemForm.patchValue({
       text: memorizeItem.getText(),
       description: memorizeItem.getDescription(),
@@ -89,20 +103,18 @@ export class TextMemorizationComponent implements OnInit, OnDestroy {
     this.itemBeingEdited.setDescription(formValue.description);
     this.itemBeingEdited.setText(formValue.text);
 
-    const result: boolean | Error = this.memorizeService.updateItem(this.itemBeingEdited);
-    if (result instanceof Error) {
-      this.showToastError(result);
-    } else if (result === true) {
-      this.clearUpdatingForm();
-    }
+    this.store.dispatch(updateMemorizeItem({ item: this.itemBeingEdited }));
+    this.subscriptions.add(
+      this.actionsSubj.pipe(
+        ofType(updateMemorizeItemSuccess),
+        first(),
+      ).subscribe(() => this.clearUpdatingForm())
+    )
   }
 
   public removeItem(memorizeItem: MemorizeItem): void {
     this.confirm('Delete item?', () => {
-      const result: boolean | Error = this.memorizeService.deleteItem(memorizeItem);
-      if (result instanceof Error) {
-        this.showToastError(result);
-      }
+      this.store.dispatch(deleteMemorizeItem({ item: memorizeItem }))
     })
   }
 
@@ -119,7 +131,7 @@ export class TextMemorizationComponent implements OnInit, OnDestroy {
     });
   }
 
-  private showToastError(error:  Error): void {
-    this.messageService.add({severity: 'error', summary: 'Submit error', detail: error.message });
+  private showToastError(error:  string): void {
+    this.messageService.add({severity: 'error', summary: 'Submit error', detail: error });
   }
 }

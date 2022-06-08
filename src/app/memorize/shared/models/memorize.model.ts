@@ -1,4 +1,4 @@
-type MemorizePlainObject = {
+export type MemorizePlainObject = {
   id: string;
   uid: string;
   text: string;

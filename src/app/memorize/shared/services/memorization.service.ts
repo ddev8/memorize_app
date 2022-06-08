@@ -1,22 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FirebaseError } from '@firebase/util'
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { EMPTY, from, Observable, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+// import { addMemorizeItem, loadMemorizeItemsSuccess, removeMemorizeItem } from '../../state';
 
-import { MemorizeItem } from '../models/memorize.model';
+import { MemorizeItem, MemorizePlainObject } from '../models/memorize.model';
 
-export type MemorizeItemFromDB = {
-  id: string;
-  uid: string;
-  text: string;
-  description: string;
-  progress: number;
-  date: any;
-  reminderDate: any;
-};
-
-type CreateMemorizeItem = {
+export type CreateMemorizeItem = {
   text: string;
   description: string;
 }
@@ -28,95 +20,96 @@ export class MemorizationService {
   private static readonly DB_COLLECTION_NAME: string = 'memorize_list';
 
   constructor(
-    private readonly db: AngularFirestore
+    private readonly db: AngularFirestore,
   ) { }
 
-  public getMemorizeItems(uid: string): Observable<MemorizeItem[]> {
-    return this.getCollectionValue(uid)
+  public getMemorizeItems(uid: string): Observable<MemorizePlainObject[]> {
+    return this.getCollectionValue(uid);
+  }
+
+  public  createItem(userInput: CreateMemorizeItem, uid: string): Observable<MemorizePlainObject> {
+    const documentUID: string = this.db.createId();
+    const memorizeItem: MemorizeItem = new MemorizeItem({
+      id: documentUID,
+      date: new Date().toISOString(),
+      reminderDate: new Date().toISOString(),
+      progress: 10,
+      description: userInput.description,
+      text: userInput.text,
+      uid: uid,
+    });
+    const reminderDate: Date = memorizeItem.updateReminderDate();
+    this.setReminder(documentUID, reminderDate);
+    const createPromise = this.db.collection(MemorizationService.DB_COLLECTION_NAME)
+      .doc(documentUID)
+      .set(memorizeItem.toPlainObj())
+
+    return from(createPromise)
       .pipe(
-        map(
-          (res: MemorizeItemFromDB[]): MemorizeItem[] => {
-            const items: MemorizeItem[] = res.map((e: MemorizeItemFromDB): MemorizeItem => {
-              return new MemorizeItem(e);
-            });
-
-            return items;
-          }
-        )
-      );
+        map((): MemorizePlainObject => {
+          return memorizeItem.toPlainObj();
+        }),
+        catchError((e): Observable<any> => {
+          return throwError(this.errorHandler(e));
+        })
+      )
   }
 
-  public createItem(userInput: CreateMemorizeItem, uid: string): true | Error {
-    try {
-      const documentUID: string = this.db.createId();
-      const memorizeItem: MemorizeItem = new MemorizeItem({
-        id: documentUID,
-        date: new Date().toISOString(),
-        reminderDate: new Date().toISOString(),
-        progress: 10,
-        description: userInput.description,
-        text: userInput.text,
-        uid: uid,
+  public updateItem(memorizeItem: MemorizeItem): Observable<MemorizePlainObject> {
+    const updatePromise: Promise<void> = this.db.collection(MemorizationService.DB_COLLECTION_NAME)
+      .doc(memorizeItem.getId())
+      .update({
+        text: memorizeItem.getText(),
+        description: memorizeItem.getDescription(),
+        progress: memorizeItem.getProgress(),
+        date: memorizeItem.getDate().toISOString(),
+        remind_date: memorizeItem.getReminderDate(),
       });
-      const reminderDate: Date = memorizeItem.updateReminderDate();
-      this.setReminder(documentUID, reminderDate);
 
-      this.db.collection(MemorizationService.DB_COLLECTION_NAME)
-        .doc(documentUID)
-        .set(memorizeItem.toPlainObj());
-
-      return true;
-    } catch(e: unknown) {
-      return this.errorHandler(e);
-    }
+    return from(updatePromise)
+      .pipe(
+        map((): MemorizePlainObject => {
+          return memorizeItem.toPlainObj();
+        }),
+        catchError((e): Observable<any> => {
+          return throwError(this.errorHandler(e));
+        })
+      )
   }
 
-  public updateItem(memorizeItem: MemorizeItem): true | Error {
-    try {
-      this.db.collection(MemorizationService.DB_COLLECTION_NAME)
-        .doc(memorizeItem.getId())
-        .update({
-          text: memorizeItem.getText(),
-          description: memorizeItem.getDescription(),
-          progress: memorizeItem.getProgress(),
-          date: memorizeItem.getDate(),
-          remind_date: memorizeItem.getReminderDate(),
-        });
+  public deleteItem(memorizeItem: MemorizeItem): Observable<MemorizePlainObject> {
+    const deletePromise: Promise<void> = this.db.collection(MemorizationService.DB_COLLECTION_NAME)
+      .doc(memorizeItem.getId())
+      .delete();
 
-      return true;
-    } catch(e: unknown) {
-      return this.errorHandler(e);
-    }
-  }
-
-  public deleteItem(memorizeItem: MemorizeItem): true | Error {
-    try {
-      this.db.collection(MemorizationService.DB_COLLECTION_NAME)
-        .doc(memorizeItem.getId())
-        .delete();
-
-      return true;
-    } catch(e: unknown) {
-      return this.errorHandler(e);
-    }
+    return from(deletePromise)
+      .pipe(
+        map((): any => {
+          return memorizeItem.toPlainObj();
+        }),
+        catchError((e): Observable<any> => {
+          throw this.errorHandler(e);
+        })
+      )
   }
 
   public setReminder(uuid: string, dateReminder: Date): void {
     // TODO: Send reminder date and id to backend.
   }
 
-  private getCollectionValue(uid: string): Observable<MemorizeItemFromDB[]> {
-    return <Observable<MemorizeItemFromDB[]>>this.db.collection(MemorizationService.DB_COLLECTION_NAME, ref => ref.orderBy('date')
-      .where('uid', '==', uid))
-      .valueChanges({ idField: 'id'})
+  private getCollectionValue(uid: string): Observable<MemorizePlainObject[]> {
+    return <Observable<MemorizePlainObject[]>>this.db.collection(
+      MemorizationService.DB_COLLECTION_NAME,
+      ref => ref.orderBy('date', 'desc').where('uid', '==', uid)
+    ).valueChanges({ idField: 'id'})
   }
 
   private errorHandler(e: unknown): Error {
     console.error(e);
-      const message: string = typeof e === 'object' && e !== null && e.hasOwnProperty('code')
-        ? `${(<FirebaseError>e).name}: ${(<FirebaseError>e).code}`
-        : 'Unknown error. Check console.';
+    const message: string = typeof e === 'object' && e !== null && e.hasOwnProperty('code')
+      ? `${(<FirebaseError>e).name}: ${(<FirebaseError>e).code}`
+      : 'Unknown error. Check console.';
 
-      return new Error(message);
+    return new Error(message);
   }
 }

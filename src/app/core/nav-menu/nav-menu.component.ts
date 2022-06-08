@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { AuthService } from '../auth/auth.service';
-import { User } from '../models/user';
+import { User } from '../../auth/models/user';
+import { Store } from '@ngrx/store';
+import { loadSignOut, selectAuthUser } from 'src/app/auth/store';
 
 @Component({
   selector: 'app-nav-menu',
   templateUrl: './nav-menu.component.html',
   styleUrls: ['./nav-menu.component.scss']
 })
-export class NavMenuComponent implements OnInit {
+export class NavMenuComponent {
   public userAvatar: string = '';
 
   public readonly menuItems: MenuItem[] = [
@@ -27,20 +28,20 @@ export class NavMenuComponent implements OnInit {
   ]
 
   constructor(
-    private readonly authService: AuthService,
+    private readonly store: Store,
     private readonly router: Router,
   ) {
-    this.authService.getUser().subscribe({
-      next: (user: User | undefined): void => {
-        if (user !== undefined) {
-          this.userAvatar = user.photoURL;
+    this.store.select(selectAuthUser).subscribe({
+      next: (user: User | null): void => {
+        if (user) {
+          this.userAvatar = user.photoURL ?? '';
           this.user = [
             {
               label: user.displayName + ' ' + user.email,
             },
             {
               label: 'Log out',
-              command: () => this.authService.signOut(),
+              command: () => this.store.dispatch(loadSignOut()),
             }
           ]
         } else {
@@ -54,9 +55,6 @@ export class NavMenuComponent implements OnInit {
         }
       }
     })
-  }
-
-  ngOnInit(): void {
   }
 
   private logIn(): void {

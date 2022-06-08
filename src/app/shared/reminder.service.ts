@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { filter, switchMap, tap } from 'rxjs/operators';
-import { AuthService } from '../core/auth/auth.service';
-import { MemorizationService } from './memorization.service';
 import { MemorizeItem } from '../memorize/shared/models/memorize.model';
-import { User } from '../core/models/user';
+import { User } from '../auth/models/user';
+import { MemorizationService } from '../memorize/shared/services/memorization.service';
+import { AuthService } from '../auth/services/auth.service';
 
 @Injectable({
   providedIn: 'root'
