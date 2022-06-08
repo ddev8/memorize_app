@@ -39,7 +39,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
   ],
   providers: [
     AngularFireAuth,
-    { provide: FIRESTORE_EMULATOR, useValue: environment.production ? undefined : ['localhost', 8080]}, // Use emulator for development mode and testing.
+    { provide: FIRESTORE_EMULATOR, useValue: environment.emulator ? ['localhost', 8080] : undefined}, // Use emulator for development mode and testing.
     { provide: USE_AUTH_EMULATOR, useValue: environment.emulator ? ['http://localhost:9099'] : undefined} // Use emulator for development mode and testing.
   ],
   exports: [
