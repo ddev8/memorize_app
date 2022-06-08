@@ -98,9 +98,10 @@ export class MemorizationService {
   }
 
   private getCollectionValue(uid: string): Observable<MemorizePlainObject[]> {
-    return <Observable<MemorizePlainObject[]>>this.db.collection(MemorizationService.DB_COLLECTION_NAME, ref => ref.orderBy('date')
-      .where('uid', '==', uid))
-      .valueChanges({ idField: 'id'})
+    return <Observable<MemorizePlainObject[]>>this.db.collection(
+      MemorizationService.DB_COLLECTION_NAME,
+      ref => ref.orderBy('date', 'desc').where('uid', '==', uid)
+    ).valueChanges({ idField: 'id'})
   }
 
   private errorHandler(e: unknown): Error {
