@@ -4,7 +4,7 @@
   "singleQuote": true,
   "semi": true,
   "bracketSpacing": true,
-  "trailingComma": "none",
+  "trailingComma": "es5",
   "bracketSameLine": false,
   "endOfLine": "lf",
   "printWidth": 120,
