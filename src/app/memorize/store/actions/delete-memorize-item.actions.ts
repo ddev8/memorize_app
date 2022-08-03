@@ -6,9 +6,7 @@ export const deleteMemorizeItem = createAction(
   props<{ item: MemorizeItem }>()
 );
 
-export const deleteMemorizeItemSuccess = createAction(
-  '[DeleteMemorizeItem] DeleteMemorizeItem Success',
-);
+export const deleteMemorizeItemSuccess = createAction('[DeleteMemorizeItem] DeleteMemorizeItem Success');
 
 export const deleteMemorizeItemFailure = createAction(
   '[DeleteMemorizeItem] DeleteMemorizeItem Failure',

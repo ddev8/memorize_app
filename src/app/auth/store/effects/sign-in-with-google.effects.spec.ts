@@ -10,10 +10,7 @@ describe('SignInWithGoogleEffects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        SignInWithGoogleEffects,
-        provideMockActions(() => actions$)
-      ]
+      providers: [SignInWithGoogleEffects, provideMockActions(() => actions$)],
     });
 
     effects = TestBed.inject(SignInWithGoogleEffects);

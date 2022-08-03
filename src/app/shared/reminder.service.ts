@@ -7,43 +7,39 @@ import { MemorizationService } from '../memorize/shared/services/memorization.se
 import { AuthService } from '../auth/services/auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReminderService {
   private itemsToRemind$: Subject<MemorizeItem[]> = new Subject();
   private itemsCount$: Subject<number> = new Subject();
 
-  constructor(
-    private readonly db: MemorizationService,
-    private readonly authService: AuthService,
-  ) {
-    this.authService.getUser()
+  constructor(private readonly db: MemorizationService, private readonly authService: AuthService) {
+    this.authService
+      .getUser()
       .pipe(
         filter((val: User | undefined): val is User => {
           console.log(val);
 
-          return val !== undefined
+          return val !== undefined;
         }),
         switchMap((val: User): Observable<MemorizeItem[]> => this.db.getMemorizeItems(val.uid))
       )
-      .subscribe(
-        (memorize_list: MemorizeItem[]): void => {
-          const today: Date = new Date();
-          const itemsToRemind: MemorizeItem[] = [];
-          let itemsCount: number = 0;
+      .subscribe((memorize_list: MemorizeItem[]): void => {
+        const today: Date = new Date();
+        const itemsToRemind: MemorizeItem[] = [];
+        let itemsCount: number = 0;
 
-          memorize_list.forEach((item: MemorizeItem) => {
-            if (item.getReminderDate().getDate() <= today.getDate()) {
-              console.log(item, "Should be reminded today");
-              itemsToRemind.push(item);
-              itemsCount++;
-            }
-          })
+        memorize_list.forEach((item: MemorizeItem) => {
+          if (item.getReminderDate().getDate() <= today.getDate()) {
+            console.log(item, 'Should be reminded today');
+            itemsToRemind.push(item);
+            itemsCount++;
+          }
+        });
 
-          this.itemsCount$.next(itemsCount);
-          this.itemsToRemind$.next(itemsToRemind);
-        }
-      )
+        this.itemsCount$.next(itemsCount);
+        this.itemsToRemind$.next(itemsToRemind);
+      });
   }
 
   public getBadgeInfo(): Observable<number> {

@@ -29,26 +29,30 @@ describe('TextMemorizationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TextMemorizationComponent ],
+      declarations: [TextMemorizationComponent],
       imports: [
-        TableModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, AngularFireAuthModule, RouterTestingModule,
+        TableModule,
+        FormsModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        AngularFireAuthModule,
+        RouterTestingModule,
         // PrimeNG
         CardModule,
         DataViewModule,
         ProgressBarModule,
         ConfirmDialogModule,
         ToastModule,
-        SkeletonModule
+        SkeletonModule,
       ],
       providers: [
         { provide: AngularFirestore, useClass: AngularFireDatabaseMock },
-        { provide: USE_AUTH_EMULATOR, useValue: environment.emulator ? ['http://localhost:9099'] : undefined},
+        { provide: USE_AUTH_EMULATOR, useValue: environment.emulator ? ['http://localhost:9099'] : undefined },
         { provide: AngularFireAuth, useClass: AngularFireAuthMock },
         ConfirmationService,
         MessageService,
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -65,37 +69,36 @@ describe('TextMemorizationComponent', () => {
     it('Should render value', () => {
       const inputValue: DebugElement = fixture.debugElement.query(By.css('.item-form__value'));
       expect(inputValue).toBeTruthy();
-    })
+    });
     it('Should render description', () => {
       const descriptionValue: DebugElement = fixture.debugElement.query(By.css('.item-form__description'));
       expect(descriptionValue).toBeTruthy();
-    })
-    it('Should render \'Memorize\' button', () => {
+    });
+    it("Should render 'Memorize' button", () => {
       const memorizeBtn: DebugElement = fixture.debugElement.query(By.css('.item-form__save'));
       expect(memorizeBtn).toBeTruthy();
-    })
+    });
     it('Should call saveItem method', fakeAsync(() => {
-      spyOn(component, "createItem");
+      spyOn(component, 'createItem');
 
       const inputValue: DebugElement = fixture.debugElement.query(By.css('.item-form__value'));
-      inputValue.nativeElement.value = "Testing value";
+      inputValue.nativeElement.value = 'Testing value';
       fixture.detectChanges();
       const form: DebugElement = fixture.debugElement.query(By.css('form'));
       form.triggerEventHandler('submit', null);
       tick();
       fixture.detectChanges();
       expect(component.createItem).toHaveBeenCalled();
-    }))
-
-  })
+    }));
+  });
 
   describe('Methods', () => {
     it('Should save new item', () => {
       component.memorizeItems = [];
-      component.itemForm.patchValue( { text: "TextMock", description: "DescrMock" });
+      component.itemForm.patchValue({ text: 'TextMock', description: 'DescrMock' });
       component.createItem();
       fixture.detectChanges();
-      expect(component.memorizeItems[1].getText()).toEqual("TextMock");
-    })
-  })
+      expect(component.memorizeItems[1].getText()).toEqual('TextMock');
+    });
+  });
 });

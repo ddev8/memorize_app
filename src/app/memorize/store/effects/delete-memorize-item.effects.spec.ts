@@ -10,10 +10,7 @@ describe('DeleteMemorizeItemEffects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        DeleteMemorizeItemEffects,
-        provideMockActions(() => actions$)
-      ]
+      providers: [DeleteMemorizeItemEffects, provideMockActions(() => actions$)],
     });
 
     effects = TestBed.inject(DeleteMemorizeItemEffects);

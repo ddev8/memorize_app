@@ -6,15 +6,9 @@ import { loadSignInWithGoogle, loadSignInWithGoogleFailure, loadSignInWithGoogle
 import { User } from '../../models/user';
 import { AuthService } from '../../services/auth.service';
 
-
-
 @Injectable()
 export class SignInWithGoogleEffects {
-  constructor(
-    private actions$: Actions,
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private actions$: Actions, private authService: AuthService, private router: Router) {}
 
   public signInWithGoogle$ = createEffect(() => {
     return this.actions$.pipe(
@@ -29,7 +23,7 @@ export class SignInWithGoogleEffects {
                 email: payload.user.email,
                 name: payload.user.displayName,
                 photoUrl: payload.user.photoURL,
-                emailVerified: payload.user.emailVerified
+                emailVerified: payload.user.emailVerified,
               };
               return loadSignInWithGoogleSuccess({ data: { user: authUser } });
             } else {
@@ -56,5 +50,4 @@ export class SignInWithGoogleEffects {
       dispatch: false,
     }
   );
-
 }

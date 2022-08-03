@@ -10,10 +10,7 @@ describe('SignOutEffects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        SignOutEffects,
-        provideMockActions(() => actions$)
-      ]
+      providers: [SignOutEffects, provideMockActions(() => actions$)],
     });
 
     effects = TestBed.inject(SignOutEffects);

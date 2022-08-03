@@ -8,8 +8,8 @@ export class AngularFireAuthMock {
     auth_state.subscribe({
       next: (val) => {
         observer.next(val);
-      }
-    })
+      },
+    });
 
     return observer;
   });

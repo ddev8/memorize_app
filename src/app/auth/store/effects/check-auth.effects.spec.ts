@@ -10,10 +10,7 @@ describe('CheckAuthEffects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        CheckAuthEffects,
-        provideMockActions(() => actions$)
-      ]
+      providers: [CheckAuthEffects, provideMockActions(() => actions$)],
     });
 
     effects = TestBed.inject(CheckAuthEffects);

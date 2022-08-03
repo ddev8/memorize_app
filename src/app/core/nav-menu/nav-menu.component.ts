@@ -8,7 +8,7 @@ import { loadSignOut, selectAuthUser } from 'src/app/auth/store';
 @Component({
   selector: 'app-nav-menu',
   templateUrl: './nav-menu.component.html',
-  styleUrls: ['./nav-menu.component.scss']
+  styleUrls: ['./nav-menu.component.scss'],
 })
 export class NavMenuComponent {
   public userAvatar: string = '';
@@ -17,20 +17,17 @@ export class NavMenuComponent {
     {
       label: 'Memorize',
       icon: 'pi pi-fw pi-book',
-      routerLink: ""
+      routerLink: '',
     },
-  ]
+  ];
   public user: MenuItem[] = [
     {
       label: 'Log in',
-      command: () => this.logIn()
-    }
-  ]
+      command: () => this.logIn(),
+    },
+  ];
 
-  constructor(
-    private readonly store: Store,
-    private readonly router: Router,
-  ) {
+  constructor(private readonly store: Store, private readonly router: Router) {
     this.store.select(selectAuthUser).subscribe({
       next: (user: User | null): void => {
         if (user) {
@@ -42,19 +39,19 @@ export class NavMenuComponent {
             {
               label: 'Log out',
               command: () => this.store.dispatch(loadSignOut()),
-            }
-          ]
+            },
+          ];
         } else {
           this.userAvatar = '';
           this.user = [
             {
               label: 'Log in',
-              command: () => this.logIn()
-            }
+              command: () => this.logIn(),
+            },
           ];
         }
-      }
-    })
+      },
+    });
   }
 
   private logIn(): void {

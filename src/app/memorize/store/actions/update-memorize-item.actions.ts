@@ -6,9 +6,7 @@ export const updateMemorizeItem = createAction(
   props<{ item: MemorizeItem }>()
 );
 
-export const updateMemorizeItemSuccess = createAction(
-  '[UpdateMemorizeItem] UpdateMemorizeItem Success',
-);
+export const updateMemorizeItemSuccess = createAction('[UpdateMemorizeItem] UpdateMemorizeItem Success');
 
 export const updateMemorizeItemFailure = createAction(
   '[UpdateMemorizeItem] UpdateMemorizeItem Failure',

@@ -11,19 +11,13 @@ import { CheckAuthEffects } from './store/effects/check-auth.effects';
 import { ButtonModule } from 'primeng/button';
 
 @NgModule({
-  declarations: [
-    SigninComponent
-  ],
+  declarations: [SigninComponent],
   imports: [
     CommonModule,
     EffectsModule.forFeature([SignOutEffects, SignInWithGoogleEffects, CheckAuthEffects]),
     ButtonModule,
   ],
-  providers: [
-    AuthService,
-  ],
-  exports: [
-    SigninComponent
-  ]
+  providers: [AuthService],
+  exports: [SigninComponent],
 })
-export class AuthModule { }
+export class AuthModule {}

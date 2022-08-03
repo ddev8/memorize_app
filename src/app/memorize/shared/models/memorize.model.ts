@@ -85,14 +85,11 @@ export class MemorizeItem {
       date: this.date.toISOString(),
       progress: this.progress,
       reminderDate: this.reminderDate.toISOString(),
-    }
+    };
   }
 
   public updateReminderDate(): Date {
-    const daysToAdd: number = this.progress === 10 ? 1
-      : this.progress === 40 ? 3
-        : this.progress === 70 ? 6
-          : 0;
+    const daysToAdd: number = this.progress === 10 ? 1 : this.progress === 40 ? 3 : this.progress === 70 ? 6 : 0;
     this.reminderDate.setDate(this.reminderDate.getDate() + daysToAdd);
 
     return this.getReminderDate();

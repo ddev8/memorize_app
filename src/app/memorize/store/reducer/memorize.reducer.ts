@@ -1,8 +1,21 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { MemorizeItem, MemorizePlainObject } from '../../shared/models/memorize.model';
-import { deleteMemorizeItem, deleteMemorizeItemFailure, deleteMemorizeItemSuccess, loadItems, loadItemsFailure, loadItemsSuccess, updateMemorizeItem, updateMemorizeItemFailure, updateMemorizeItemSuccess } from '../actions';
-import { createMemorizeItem, createMemorizeItemFailure, createMemorizeItemSuccess } from '../actions/create-memorize-items.actions';
-
+import {
+  deleteMemorizeItem,
+  deleteMemorizeItemFailure,
+  deleteMemorizeItemSuccess,
+  loadItems,
+  loadItemsFailure,
+  loadItemsSuccess,
+  updateMemorizeItem,
+  updateMemorizeItemFailure,
+  updateMemorizeItemSuccess,
+} from '../actions';
+import {
+  createMemorizeItem,
+  createMemorizeItemFailure,
+  createMemorizeItemSuccess,
+} from '../actions/create-memorize-items.actions';
 
 export const memorizeFeatureKey = 'memorizeItems';
 
@@ -15,7 +28,7 @@ export interface MemorizeState {
 export const initialState: MemorizeState = {
   items: [],
   loading: false,
-  error: null
+  error: null,
 };
 
 export const MemorizeReducer = createReducer(
@@ -35,5 +48,5 @@ export const MemorizeReducer = createReducer(
 
   on(deleteMemorizeItem, (state): MemorizeState => ({ ...state, loading: true })),
   on(deleteMemorizeItemSuccess, (state, action): MemorizeState => ({ ...state, loading: false })),
-  on(deleteMemorizeItemFailure, (state, action): MemorizeState => ({ ...state, loading: false, error: action.error })),
+  on(deleteMemorizeItemFailure, (state, action): MemorizeState => ({ ...state, loading: false, error: action.error }))
 );

@@ -17,19 +17,10 @@ describe('NavMenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        MenuModule,
-        MenubarModule,
-        AvatarModule,
-        ButtonModule,
-        RouterTestingModule.withRoutes([]),
-      ],
+      imports: [MenuModule, MenubarModule, AvatarModule, ButtonModule, RouterTestingModule.withRoutes([])],
       declarations: [NavMenuComponent],
-      providers: [
-        { provide: AngularFireAuth, useClass: AngularFireAuthMock }
-      ]
-    })
-      .compileComponents();
+      providers: [{ provide: AngularFireAuth, useClass: AngularFireAuthMock }],
+    }).compileComponents();
   });
 
   beforeEach(() => {

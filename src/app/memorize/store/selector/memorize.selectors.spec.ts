@@ -1,7 +1,3 @@
-
-
 describe('Memorize Selectors', () => {
-  it('should select the feature state', () => {
-    
-  });
+  it('should select the feature state', () => {});
 });

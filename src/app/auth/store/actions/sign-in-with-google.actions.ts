@@ -1,13 +1,11 @@
 import { createAction, props } from '@ngrx/store';
 import { User } from '../../models/user';
 
-export const loadSignInWithGoogle = createAction(
-  '[SignInWithGoogle] Load SignInWithGoogle'
-);
+export const loadSignInWithGoogle = createAction('[SignInWithGoogle] Load SignInWithGoogle');
 
 export const loadSignInWithGoogleSuccess = createAction(
   '[SignInWithGoogle] Load SignInWithGoogle Success',
-  props<{ data: { user: User }}>()
+  props<{ data: { user: User } }>()
 );
 
 export const loadSignInWithGoogleFailure = createAction(

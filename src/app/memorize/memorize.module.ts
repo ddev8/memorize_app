@@ -17,12 +17,15 @@ import { MemorizationService } from './shared/services/memorization.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
 import { EffectsModule } from '@ngrx/effects';
-import { CreateMemorizeItemEffects, DeleteMemorizeItemEffects, LoadItemsEffects, UpdateMemorizeItemEffects } from './store';
+import {
+  CreateMemorizeItemEffects,
+  DeleteMemorizeItemEffects,
+  LoadItemsEffects,
+  UpdateMemorizeItemEffects,
+} from './store';
 
 @NgModule({
-  declarations: [
-    TextMemorizationComponent
-  ],
+  declarations: [TextMemorizationComponent],
   imports: [
     CommonModule,
     SharedModule,
@@ -37,15 +40,14 @@ import { CreateMemorizeItemEffects, DeleteMemorizeItemEffects, LoadItemsEffects,
     ConfirmDialogModule,
     ToastModule,
     SkeletonModule,
-    EffectsModule.forFeature([LoadItemsEffects, CreateMemorizeItemEffects, UpdateMemorizeItemEffects, DeleteMemorizeItemEffects])
+    EffectsModule.forFeature([
+      LoadItemsEffects,
+      CreateMemorizeItemEffects,
+      UpdateMemorizeItemEffects,
+      DeleteMemorizeItemEffects,
+    ]),
   ],
-  providers: [
-    MemorizationService,
-    ConfirmationService,
-    MessageService
-  ],
-  exports: [
-    TextMemorizationComponent
-  ]
+  providers: [MemorizationService, ConfirmationService, MessageService],
+  exports: [TextMemorizationComponent],
 })
-export class MemorizeModule { }
+export class MemorizeModule {}

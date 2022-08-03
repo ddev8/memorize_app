@@ -8,16 +8,9 @@ import { NavMenuComponent } from './core/nav-menu/nav-menu.component';
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent,
-        NavMenuComponent
-      ],
-      providers: [
-        { provide: AngularFireAuth, useClass: AngularFireAuthMock }
-      ]
+      imports: [RouterTestingModule],
+      declarations: [AppComponent, NavMenuComponent],
+      providers: [{ provide: AngularFireAuth, useClass: AngularFireAuthMock }],
     }).compileComponents();
   });
 

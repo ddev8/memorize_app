@@ -7,20 +7,18 @@ import { AuthState, loadCheckAuth, loadSignInWithGoogle, selectAuthLoading, sele
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
-  styleUrls: ['./signin.component.scss']
+  styleUrls: ['./signin.component.scss'],
 })
 export class SigninComponent implements OnInit {
   public authLoading$: Observable<boolean>;
 
-  constructor(
-    private readonly store: Store
-  ) {
+  constructor(private readonly store: Store) {
     this.authLoading$ = this.store.select(selectAuthLoading);
   }
 
   public ngOnInit(): void {
     // setTimeout(() => {
-      this.store.dispatch(loadCheckAuth());
+    this.store.dispatch(loadCheckAuth());
     // }, 6000)
     // this.store.dispatch(loadCheckAuth());
   }
@@ -28,5 +26,4 @@ export class SigninComponent implements OnInit {
   public signInWithGoogle(): void {
     this.store.dispatch(loadSignInWithGoogle());
   }
-
 }

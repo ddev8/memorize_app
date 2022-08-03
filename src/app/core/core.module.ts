@@ -20,9 +20,7 @@ import { reducers } from './state';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 
 @NgModule({
-  declarations: [
-    NavMenuComponent
-  ],
+  declarations: [NavMenuComponent],
   imports: [
     AuthModule,
     CommonModule,
@@ -39,11 +37,9 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
   ],
   providers: [
     AngularFireAuth,
-    { provide: FIRESTORE_EMULATOR, useValue: environment.emulator ? ['localhost', 8080] : undefined}, // Use emulator for development mode and testing.
-    { provide: USE_AUTH_EMULATOR, useValue: environment.emulator ? ['http://localhost:9099'] : undefined} // Use emulator for development mode and testing.
+    { provide: FIRESTORE_EMULATOR, useValue: environment.emulator ? ['localhost', 8080] : undefined }, // Use emulator for development mode and testing.
+    { provide: USE_AUTH_EMULATOR, useValue: environment.emulator ? ['http://localhost:9099'] : undefined }, // Use emulator for development mode and testing.
   ],
-  exports: [
-    NavMenuComponent,
-  ]
+  exports: [NavMenuComponent],
 })
-export class CoreModule { }
+export class CoreModule {}

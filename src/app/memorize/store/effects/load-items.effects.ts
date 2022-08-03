@@ -11,17 +11,11 @@ import { loadItems, loadItemsFailure, loadItemsSuccess } from '../actions';
 import { MemorizeState } from '../reducer/memorize.reducer';
 import { selectMemorizeItems } from '../selector/memorize.selectors';
 
-
-
 @Injectable()
 export class LoadItemsEffects {
   getMemorizeItems: any;
 
-  constructor(
-    private actions$: Actions,
-    private memorizationService: MemorizationService,
-    private store: Store
-  ) {}
+  constructor(private actions$: Actions, private memorizationService: MemorizationService, private store: Store) {}
 
   public loadItems$ = createEffect(() => {
     return this.actions$.pipe(
@@ -31,14 +25,13 @@ export class LoadItemsEffects {
       switchMap((payload) => {
         const user: User = <User>payload[1];
 
-        return this.memorizationService.getMemorizeItems(user.uid)
-          .pipe(
-            map((items) => {
-              return loadItemsSuccess({ items })
-            }),
-            catchError((error) => of(loadItemsFailure({ error })))
-          )
+        return this.memorizationService.getMemorizeItems(user.uid).pipe(
+          map((items) => {
+            return loadItemsSuccess({ items });
+          }),
+          catchError((error) => of(loadItemsFailure({ error })))
+        );
       })
-    )
-  })
+    );
+  });
 }

@@ -10,10 +10,7 @@ describe('LoadItemsEffects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        LoadItemsEffects,
-        provideMockActions(() => actions$)
-      ]
+      providers: [LoadItemsEffects, provideMockActions(() => actions$)],
     });
 
     effects = TestBed.inject(LoadItemsEffects);

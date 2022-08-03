@@ -11,7 +11,7 @@ const routes: Routes = [
     path: '',
     component: TextMemorizationComponent,
     canActivate: [AngularFireAuthGuard],
-    data: { authGuardPipe: () => redirectUnauthorizedTo('login') }
+    data: { authGuardPipe: () => redirectUnauthorizedTo('login') },
   },
   {
     path: 'login',
@@ -25,6 +25,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

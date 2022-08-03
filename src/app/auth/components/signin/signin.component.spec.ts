@@ -11,13 +11,10 @@ describe('SigninComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ RouterTestingModule ],
-      declarations: [ SigninComponent ],
-      providers: [
-        { provide: AngularFireAuth, useClass: AngularFireAuthMock }
-      ]
-    })
-    .compileComponents();
+      imports: [RouterTestingModule],
+      declarations: [SigninComponent],
+      providers: [{ provide: AngularFireAuth, useClass: AngularFireAuthMock }],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -5,15 +5,9 @@ import { switchMap, tap } from 'rxjs/operators';
 import { loadSignOut, loadSignOutFailure, loadSignOutSuccess } from '..';
 import { AuthService } from '../../services/auth.service';
 
-
-
 @Injectable()
 export class SignOutEffects {
-  constructor(
-    private actions$: Actions,
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private actions$: Actions, private authService: AuthService, private router: Router) {}
 
   public signout$ = createEffect(() => {
     return this.actions$.pipe(
@@ -42,5 +36,4 @@ export class SignOutEffects {
       dispatch: false,
     }
   );
-
 }

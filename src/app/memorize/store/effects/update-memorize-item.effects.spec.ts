@@ -10,10 +10,7 @@ describe('UpdateMemorizeItemEffects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        UpdateMemorizeItemEffects,
-        provideMockActions(() => actions$)
-      ]
+      providers: [UpdateMemorizeItemEffects, provideMockActions(() => actions$)],
     });
 
     effects = TestBed.inject(UpdateMemorizeItemEffects);

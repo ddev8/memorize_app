@@ -5,17 +5,14 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AngularFireAuthMock } from '../../core/mocks/firebase-auth.mock';
 import { AuthService } from './auth.service';
 
-
 describe('AuthService', () => {
   let service: AuthService;
   let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ RouterTestingModule ],
-      providers: [
-        { provide: AngularFireAuth, useClass: AngularFireAuthMock }
-      ]
+      imports: [RouterTestingModule],
+      providers: [{ provide: AngularFireAuth, useClass: AngularFireAuthMock }],
     });
     service = TestBed.inject(AuthService);
     router = TestBed.inject(Router);
@@ -31,20 +28,20 @@ describe('AuthService', () => {
         next: (user) => {
           expect(user).not.toBeUndefined();
           done();
-        }
+        },
       });
       service.googleAuth();
-    })
+    });
     it('Should sign out', (done) => {
       service.getUser().subscribe({
         next: (user) => {
           expect(user).toBeUndefined();
           done();
-        }
+        },
       });
       service.signOut();
-    })
-  })
+    });
+  });
 
   // describe('Navigation', () => {
   //   it('Should redirect after sign in', () => {

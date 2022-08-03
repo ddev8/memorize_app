@@ -4,9 +4,8 @@ import { memorizeFeatureKey, MemorizeState } from '../reducer/memorize.reducer';
 
 const selectMemorizeItemFeature = createFeatureSelector<MemorizeState>(memorizeFeatureKey);
 
-export const selectMemorizeItems = createSelector(
-  selectMemorizeItemFeature,
-  (state: MemorizeState): MemorizeItem[] => state.items.map((i) => new MemorizeItem(i))
+export const selectMemorizeItems = createSelector(selectMemorizeItemFeature, (state: MemorizeState): MemorizeItem[] =>
+  state.items.map((i) => new MemorizeItem(i))
 );
 export const selectMemorizeItemLoading = createSelector(
   selectMemorizeItemFeature,
