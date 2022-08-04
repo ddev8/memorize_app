@@ -26,69 +26,82 @@ export class MemorizationService {
   }
 
   public createItem(userInput: CreateMemorizeItem, uid: string): Observable<MemorizePlainObject> {
-    const documentUID: string = this.db.createId();
-    const memorizeItem: MemorizeItem = new MemorizeItem({
-      id: documentUID,
-      date: new Date().toISOString(),
-      reminderDate: new Date().toISOString(),
-      progress: 10,
-      description: userInput.description,
-      text: userInput.text,
-      uid: uid,
-    });
-    const reminderDate: Date = memorizeItem.updateReminderDate();
-    this.setReminder(documentUID, reminderDate);
-    const createPromise = this.db
-      .collection(MemorizationService.DB_COLLECTION_NAME)
-      .doc(documentUID)
-      .set(memorizeItem.toPlainObj());
+    try {
+      const documentUID: string = this.db.createId();
+      const memorizeItem: MemorizeItem = new MemorizeItem({
+        id: documentUID,
+        date: new Date().toISOString(),
+        reminderDate: new Date().toISOString(),
+        progress: 10,
+        description: userInput.description,
+        text: userInput.text,
+        uid: uid,
+      });
+      const reminderDate: Date = memorizeItem.updateReminderDate();
+      this.setReminder(documentUID, reminderDate);
 
-    return from(createPromise).pipe(
-      map((): MemorizePlainObject => {
-        return memorizeItem.toPlainObj();
-      }),
-      catchError((e): Observable<any> => {
-        return throwError(this.errorHandler(e));
-      })
-    );
+      const createPromise = this.db
+        .collection(MemorizationService.DB_COLLECTION_NAME)
+        .doc(documentUID)
+        .set(memorizeItem.toPlainObj());
+
+      return from(createPromise).pipe(
+        map((): MemorizePlainObject => {
+          return memorizeItem.toPlainObj();
+        }),
+        catchError((e): Observable<any> => {
+          return throwError(this.errorHandler(e));
+        })
+      );
+    } catch (e) {
+      return throwError(this.errorHandler(e));
+    }
   }
 
   public updateItem(memorizeItem: MemorizeItem): Observable<MemorizePlainObject> {
-    const updatePromise: Promise<void> = this.db
-      .collection(MemorizationService.DB_COLLECTION_NAME)
-      .doc(memorizeItem.getId())
-      .update({
-        text: memorizeItem.getText(),
-        description: memorizeItem.getDescription(),
-        progress: memorizeItem.getProgress(),
-        date: memorizeItem.getDate().toISOString(),
-        remind_date: memorizeItem.getReminderDate(),
-      });
+    try {
+      const updatePromise: Promise<void> = this.db
+        .collection(MemorizationService.DB_COLLECTION_NAME)
+        .doc(memorizeItem.getId())
+        .update({
+          text: memorizeItem.getText(),
+          description: memorizeItem.getDescription(),
+          progress: memorizeItem.getProgress(),
+          date: memorizeItem.getDate().toISOString(),
+          remind_date: memorizeItem.getReminderDate(),
+        });
 
-    return from(updatePromise).pipe(
-      map((): MemorizePlainObject => {
-        return memorizeItem.toPlainObj();
-      }),
-      catchError((e): Observable<any> => {
-        return throwError(this.errorHandler(e));
-      })
-    );
+      return from(updatePromise).pipe(
+        map((): MemorizePlainObject => {
+          return memorizeItem.toPlainObj();
+        }),
+        catchError((e): Observable<any> => {
+          return throwError(this.errorHandler(e));
+        })
+      );
+    } catch (e) {
+      return throwError(this.errorHandler(e));
+    }
   }
 
   public deleteItem(memorizeItem: MemorizeItem): Observable<MemorizePlainObject> {
-    const deletePromise: Promise<void> = this.db
-      .collection(MemorizationService.DB_COLLECTION_NAME)
-      .doc(memorizeItem.getId())
-      .delete();
+    try {
+      const deletePromise: Promise<void> = this.db
+        .collection(MemorizationService.DB_COLLECTION_NAME)
+        .doc(memorizeItem.getId())
+        .delete();
 
-    return from(deletePromise).pipe(
-      map((): any => {
-        return memorizeItem.toPlainObj();
-      }),
-      catchError((e): Observable<any> => {
-        throw this.errorHandler(e);
-      })
-    );
+      return from(deletePromise).pipe(
+        map((): any => {
+          return memorizeItem.toPlainObj();
+        }),
+        catchError((e): Observable<any> => {
+          throw this.errorHandler(e);
+        })
+      );
+    } catch (e) {
+      return throwError(this.errorHandler(e));
+    }
   }
 
   public setReminder(uuid: string, dateReminder: Date): void {

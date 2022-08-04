@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { RouterTestingModule } from '@angular/router/testing';
+import { CoreModule } from 'src/app/core/core.module';
 import { AngularFireAuthMock } from '../../../core/mocks/firebase-auth.mock';
 
 import { SigninComponent } from './signin.component';
@@ -11,7 +12,7 @@ describe('SigninComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, CoreModule],
       declarations: [SigninComponent],
       providers: [{ provide: AngularFireAuth, useClass: AngularFireAuthMock }],
     }).compileComponents();

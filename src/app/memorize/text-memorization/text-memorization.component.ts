@@ -40,7 +40,6 @@ export class TextMemorizationComponent implements OnInit, OnDestroy {
   public itemForm: TForm<FormModel>;
   public editMode: boolean = false;
 
-  public memorizeItems: MemorizeItem[] = [];
   public memorizeItems$: Observable<MemorizeItem[]>;
   private itemBeingEdited: MemorizeItem | undefined = undefined;
 

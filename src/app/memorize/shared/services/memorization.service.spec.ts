@@ -11,7 +11,7 @@ import {
 import { environment } from 'src/environments/environment';
 
 import { MemorizationService } from './memorization.service';
-import { MemorizeItem } from '../models/memorize.model';
+import { MemorizeItem, MemorizePlainObject } from '../models/memorize.model';
 import { AngularFireDatabaseMock, memorize_list, USER_UID } from '../mocks/firestore.mock';
 import { first } from 'rxjs/operators';
 
@@ -49,7 +49,7 @@ describe('MemorizationService', () => {
         .pipe(first())
         .subscribe({
           next: (value) => {
-            expect(value[0]).toEqual(mockItem);
+            expect(value[0]).toEqual(mockItem.toPlainObj());
             done();
           },
         });
@@ -58,41 +58,55 @@ describe('MemorizationService', () => {
 
   describe('Create item', () => {
     it('Should create item', () => {
-      const result: true | Error = service.createItem(
-        {
-          description: 'Create description',
-          text: 'Create text',
-        },
-        USER_UID
-      );
-      expect(result).toBeTruthy();
+      service
+        .createItem(
+          {
+            description: 'Create description',
+            text: 'Create text',
+          },
+          USER_UID
+        )
+        .subscribe((result) => {
+          expect(result).toBeTruthy();
+        });
     });
     it('Should return an error', () => {
-      const result: true | Error = service.createItem(<any>undefined, USER_UID);
-      expect(result).toBeInstanceOf(Error);
+      service.createItem(<any>undefined, USER_UID).subscribe((result) => {
+        expect(result).toBeInstanceOf(Error);
+      });
     });
   });
 
   describe('Should update', () => {
     it('Should update item', () => {
       mockItem.setText('Updated text');
-      const result: true | Error = service.updateItem(mockItem);
-      expect(result).toBeTruthy();
+      service.updateItem(mockItem).subscribe({
+        next: (result) => {
+          expect(result).toBeTruthy();
+        },
+      });
     });
     it('Should return an error', () => {
-      const result: true | Error = service.updateItem(<any>{});
-      expect(result).toBeInstanceOf(Error);
+      service.updateItem(<any>{}).subscribe({
+        error: (result) => {
+          expect(result).toBeInstanceOf(Error);
+        },
+      });
     });
   });
 
   describe('Should delete', () => {
     it('Should delete item', () => {
-      const result: true | Error = service.deleteItem(mockItem);
-      expect(result).toBeTruthy();
+      service.deleteItem(mockItem).subscribe((result) => {
+        expect(result).toBeTruthy();
+      });
     });
     it('Should return an error', () => {
-      const result: true | Error = service.deleteItem(<any>{});
-      expect(result).toBeInstanceOf(Error);
+      service.deleteItem(<any>{}).subscribe({
+        error: (result) => {
+          expect(result).toBeInstanceOf(Error);
+        },
+      });
     });
   });
 });

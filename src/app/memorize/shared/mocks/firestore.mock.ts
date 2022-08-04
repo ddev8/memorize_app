@@ -1,10 +1,10 @@
 import { FirebaseError } from '@firebase/util';
 import { BehaviorSubject, of } from 'rxjs';
-import { MemorizeItemFromDB } from '../services/memorization.service';
+import { MemorizePlainObject } from '../models/memorize.model';
 
 export const USER_UID: string = '9Corylm9Ooc9HDTsaJnEoQ5OkJe2';
 
-export const immutableItem: MemorizeItemFromDB = {
+export const immutableItem: MemorizePlainObject = {
   date: '2021-12-07T08:02:28.707Z',
   description: 'Create description',
   id: 'tLTBqdnNRuGg2xhfHuXd',
@@ -14,7 +14,7 @@ export const immutableItem: MemorizeItemFromDB = {
   text: 'Create text',
 };
 
-export let memorize_list: MemorizeItemFromDB[] = [
+export let memorize_list: MemorizePlainObject[] = [
   {
     date: '2021-12-07T08:02:28.707Z',
     description: 'Create description',
@@ -25,7 +25,7 @@ export let memorize_list: MemorizeItemFromDB[] = [
     uid: USER_UID,
   },
 ];
-const memorizeList: BehaviorSubject<MemorizeItemFromDB[]> = new BehaviorSubject(memorize_list);
+const memorizeList: BehaviorSubject<MemorizePlainObject[]> = new BehaviorSubject(memorize_list);
 
 export class AngularFireDatabaseMock {
   collection(query: string): any {
@@ -36,16 +36,20 @@ export class AngularFireDatabaseMock {
       doc(id: string) {
         return {
           delete: () => {
-            const index: number = memorize_list.findIndex((v: MemorizeItemFromDB) => v.id === id);
+            const index: number = memorize_list.findIndex((v: MemorizePlainObject) => v.id === id);
             if (index === -1) {
               throw new FirebaseError('code', 'FireStore error');
             } else {
               memorize_list.splice(index, 1);
             }
             memorizeList.next([...memorize_list]);
+
+            return new Promise<void>((resolve) => resolve());
           },
           update: (val: any) => {
-            const found_el: MemorizeItemFromDB | undefined = memorize_list.find((v: MemorizeItemFromDB) => v.id === id);
+            const found_el: MemorizePlainObject | undefined = memorize_list.find(
+              (v: MemorizePlainObject) => v.id === id
+            );
             if (found_el !== undefined) {
               found_el.date = val.date;
               found_el.description = val.description;
@@ -62,8 +66,14 @@ export class AngularFireDatabaseMock {
               memorize_list.push(val);
               memorizeList.next([...memorize_list]);
             } else {
-              throw new FirebaseError('code', 'Save error.');
+              // throw new FirebaseError('code', 'Save error.');
+              return new Promise<void>((rejects) => {
+                rejects();
+                throw new FirebaseError('code', 'Save error.');
+              });
             }
+
+            return new Promise<void>((resolve) => resolve());
           },
         };
       },

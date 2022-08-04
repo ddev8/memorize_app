@@ -1,6 +1,11 @@
 import { TestBed } from '@angular/core/testing';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 import { CheckAuthEffects } from './check-auth.effects';
 
@@ -10,7 +15,12 @@ describe('CheckAuthEffects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CheckAuthEffects, provideMockActions(() => actions$)],
+      imports: [
+        AngularFireModule.initializeApp(environment.firebaseConfig),
+        AngularFirestoreModule,
+        RouterTestingModule,
+      ],
+      providers: [CheckAuthEffects, provideMockActions(() => actions$), AngularFireAuth],
     });
 
     effects = TestBed.inject(CheckAuthEffects);

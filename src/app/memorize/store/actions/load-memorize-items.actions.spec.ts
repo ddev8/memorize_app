@@ -1,7 +1,7 @@
 import * as fromLoadItems from './load-memorize-items.actions';
 
-describe('loadLoadItemss', () => {
+describe('loadLoadItems', () => {
   it('should return an action', () => {
-    expect(fromLoadItems.loadItems().type).toBe('[LoadItems] Load LoadItemss');
+    expect(fromLoadItems.loadItems().type).toBe('[LoadItems] Load Items');
   });
 });

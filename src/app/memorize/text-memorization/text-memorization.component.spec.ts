@@ -7,6 +7,7 @@ import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Store, StoreModule } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CardModule } from 'primeng/card';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -15,7 +16,9 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
+import { reducers } from 'src/app/core/state';
 import { environment } from '../../../environments/environment';
+import * as fromCreateMemorizeItems from '../store/actions/create-memorize-items.actions';
 
 import { AngularFireAuthMock } from '../../core/mocks/firebase-auth.mock';
 
@@ -26,6 +29,7 @@ import { TextMemorizationComponent } from './text-memorization.component';
 describe('TextMemorizationComponent', () => {
   let component: TextMemorizationComponent;
   let fixture: ComponentFixture<TextMemorizationComponent>;
+  let store: Store;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -44,6 +48,7 @@ describe('TextMemorizationComponent', () => {
         ConfirmDialogModule,
         ToastModule,
         SkeletonModule,
+        StoreModule.forRoot(reducers),
       ],
       providers: [
         { provide: AngularFirestore, useClass: AngularFireDatabaseMock },
@@ -57,6 +62,7 @@ describe('TextMemorizationComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TextMemorizationComponent);
+    store = TestBed.inject(Store);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -94,11 +100,13 @@ describe('TextMemorizationComponent', () => {
 
   describe('Methods', () => {
     it('Should save new item', () => {
-      component.memorizeItems = [];
+      const storeSpy = spyOn(store, 'dispatch').and.callThrough();
       component.itemForm.patchValue({ text: 'TextMock', description: 'DescrMock' });
       component.createItem();
       fixture.detectChanges();
-      expect(component.memorizeItems[1].getText()).toEqual('TextMock');
+      expect(storeSpy).toHaveBeenCalledOnceWith(
+        fromCreateMemorizeItems.createMemorizeItem({ item: { text: 'TextMock', description: 'DescrMock' } })
+      );
     });
   });
 });

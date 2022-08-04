@@ -21,38 +21,4 @@ describe('AuthService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
-
-  describe('Methods', () => {
-    it('Should sign in with google', (done) => {
-      service.getUser().subscribe({
-        next: (user) => {
-          expect(user).not.toBeUndefined();
-          done();
-        },
-      });
-      service.googleAuth();
-    });
-    it('Should sign out', (done) => {
-      service.getUser().subscribe({
-        next: (user) => {
-          expect(user).toBeUndefined();
-          done();
-        },
-      });
-      service.signOut();
-    });
-  });
-
-  // describe('Navigation', () => {
-  //   it('Should redirect after sign in', () => {
-  //     service.googleAuth();
-  //     spyOn(router, 'navigate');
-  //     expect(router.navigate).toHaveBeenCalledWith(['/']);
-  //   })
-  //   it('Should redirect after sign out', () => {
-  //     service.signOut();
-  //     spyOn(router, 'navigate');
-  //     expect(router.navigate).toHaveBeenCalledWith(['login']);
-  //   })
-  // })
 });
