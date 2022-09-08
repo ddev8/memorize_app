@@ -43,21 +43,20 @@ describe('MemorizationService', () => {
   });
 
   describe('Get items', () => {
-    it('Should get items from db', (done) => {
+    it('Should get items from db', async () => {
       service
         .getMemorizeItems(USER_UID)
         .pipe(first())
         .subscribe({
           next: (value) => {
             expect(value[0]).toEqual(mockItem.toPlainObj());
-            done();
           },
         });
     });
   });
 
   describe('Create item', () => {
-    it('Should create item', () => {
+    it('Should create item', async () => {
       service
         .createItem(
           {
@@ -70,15 +69,17 @@ describe('MemorizationService', () => {
           expect(result).toBeTruthy();
         });
     });
-    it('Should return an error', () => {
-      service.createItem(<any>undefined, USER_UID).subscribe((result) => {
-        expect(result).toBeInstanceOf(Error);
+    it('Should return an error', async () => {
+      service.createItem(<any>undefined, USER_UID).subscribe({
+        error: (result) => {
+          expect(result).toBeInstanceOf(Error);
+        },
       });
     });
   });
 
   describe('Should update', () => {
-    it('Should update item', () => {
+    it('Should update item', async () => {
       mockItem.setText('Updated text');
       service.updateItem(mockItem).subscribe({
         next: (result) => {
@@ -86,7 +87,7 @@ describe('MemorizationService', () => {
         },
       });
     });
-    it('Should return an error', () => {
+    it('Should return an error', async () => {
       service.updateItem(<any>{}).subscribe({
         error: (result) => {
           expect(result).toBeInstanceOf(Error);
@@ -96,12 +97,12 @@ describe('MemorizationService', () => {
   });
 
   describe('Should delete', () => {
-    it('Should delete item', () => {
+    it('Should delete item', async () => {
       service.deleteItem(mockItem).subscribe((result) => {
         expect(result).toBeTruthy();
       });
     });
-    it('Should return an error', () => {
+    it('Should return an error', async () => {
       service.deleteItem(<any>{}).subscribe({
         error: (result) => {
           expect(result).toBeInstanceOf(Error);

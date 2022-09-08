@@ -57,6 +57,8 @@ export class AngularFireDatabaseMock {
               found_el.reminderDate = val.reminderDate;
               found_el.text = val.text;
               memorizeList.next([...memorize_list]);
+
+              return new Promise<void>((resolve) => resolve());
             } else {
               throw new FirebaseError('code', 'FireStore error');
             }
