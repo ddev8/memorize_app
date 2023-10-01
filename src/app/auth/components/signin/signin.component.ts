@@ -17,10 +17,7 @@ export class SigninComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    // setTimeout(() => {
     this.store.dispatch(loadCheckAuth());
-    // }, 6000)
-    // this.store.dispatch(loadCheckAuth());
   }
 
   public signInWithGoogle(): void {

@@ -68,7 +68,7 @@ export class MemorizationService {
           description: memorizeItem.getDescription(),
           progress: memorizeItem.getProgress(),
           date: memorizeItem.getDate().toISOString(),
-          remind_date: memorizeItem.getReminderDate(),
+          reminderDate: memorizeItem.getReminderDate().toISOString(),
         });
 
       return from(updatePromise).pipe(

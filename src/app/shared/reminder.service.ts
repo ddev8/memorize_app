@@ -5,48 +5,44 @@ import { MemorizeItem } from '../memorize/shared/models/memorize.model';
 import { User } from '../auth/models/user';
 import { MemorizationService } from '../memorize/shared/services/memorization.service';
 import { AuthService } from '../auth/services/auth.service';
+import { Store } from '@ngrx/store';
+import { selectMemorizeItems } from '../memorize/store';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReminderService {
-  private itemsToRemind$: Subject<MemorizeItem[]> = new Subject();
-  private itemsCount$: Subject<number> = new Subject();
+  private itemsToRemind$: BehaviorSubject<MemorizeItem[] | undefined> = new BehaviorSubject<MemorizeItem[] | undefined>(
+    undefined
+  );
+  private itemsCount$: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
+  private allItems$: Observable<MemorizeItem[]>;
 
-  constructor(private readonly db: MemorizationService, private readonly authService: AuthService) {
-    this.authService
-      .getUser()
-      .pipe(
-        filter((val: User | undefined): val is User => {
-          console.log(val);
+  constructor(private readonly store: Store) {
+    this.allItems$ = this.store.select(selectMemorizeItems);
 
-          return val !== undefined;
-        }),
-        switchMap((val: User): Observable<MemorizeItem[]> => this.db.getMemorizeItems(val.uid))
-      )
-      .subscribe((memorize_list: MemorizeItem[]): void => {
-        const today: Date = new Date();
-        const itemsToRemind: MemorizeItem[] = [];
-        let itemsCount: number = 0;
+    this.allItems$.subscribe((memorize_list: MemorizeItem[]): void => {
+      const today: Date = new Date();
+      const itemsToRemind: MemorizeItem[] = [];
+      let itemsCount: number = 0;
 
-        memorize_list.forEach((item: MemorizeItem) => {
-          if (item.getReminderDate().getDate() <= today.getDate()) {
-            console.log(item, 'Should be reminded today');
-            itemsToRemind.push(item);
-            itemsCount++;
-          }
-        });
-
-        this.itemsCount$.next(itemsCount);
-        this.itemsToRemind$.next(itemsToRemind);
+      memorize_list.forEach((item: MemorizeItem) => {
+        if (item.getReminderDate().getDate() <= today.getDate()) {
+          itemsToRemind.push(item);
+          itemsCount++;
+        }
       });
+
+      this.itemsCount$.next(itemsCount);
+      this.itemsToRemind$.next(itemsToRemind);
+    });
   }
 
-  public getBadgeInfo(): Observable<number> {
-    return this.itemsCount$;
+  public getBadgeInfo(): Observable<number | undefined> {
+    return this.itemsCount$.asObservable();
   }
 
-  public getItems(): Observable<MemorizeItem[]> {
-    return this.itemsToRemind$;
+  public getItems(): Observable<MemorizeItem[] | undefined> {
+    return this.itemsToRemind$.asObservable();
   }
 }

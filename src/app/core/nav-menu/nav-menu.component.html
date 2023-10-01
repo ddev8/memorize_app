@@ -1,11 +1,28 @@
-<p-menubar [model]="menuItems">
-  <p-menu [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'" #menu [popup]="true" [model]="user"></p-menu>
-  <span [ngSwitch]="!!userAvatar">
-    <ng-container *ngSwitchCase="true">
-      <p-avatar [image]="userAvatar" size="large" shape="circle" (click)="menu.toggle($event)"></p-avatar>
-    </ng-container>
-    <ng-container *ngSwitchDefault>
-      <p-avatar icon="pi pi-user" size="large" shape="circle" (click)="menu.toggle($event)"></p-avatar>
-    </ng-container>
-  </span>
-</p-menubar>
+<div class="nav-menu-wrapper">
+  <div class="menu">
+    <p-tabMenu [model]="menuItems">
+      <ng-template pTemplate="item" let-item>
+        <i [class]="item.icon" style="margin-right: 5px"></i>
+        <p style="margin-right: 4px">{{ item.label }}</p>
+        <p-badge *ngIf="item.badge" [value]="item.badge" [severity]="item.badgeStyleClass"></p-badge>
+      </ng-template>
+    </p-tabMenu>
+  </div>
+  <div class="user-menu">
+    <p-menu
+      [showTransitionOptions]="'0ms'"
+      [hideTransitionOptions]="'0ms'"
+      #menu
+      [popup]="true"
+      [model]="user"
+    ></p-menu>
+    <span [ngSwitch]="!!userAvatar">
+      <ng-container *ngSwitchCase="true">
+        <p-avatar [image]="userAvatar" size="large" shape="circle" (click)="menu.toggle($event)"></p-avatar>
+      </ng-container>
+      <ng-container *ngSwitchDefault>
+        <p-avatar icon="pi pi-user" size="large" shape="circle" (click)="menu.toggle($event)"></p-avatar>
+      </ng-container>
+    </span>
+  </div>
+</div>

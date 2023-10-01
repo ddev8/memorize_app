@@ -31,6 +31,6 @@ export const AuthReducer = createReducer(
   on(loadSignInWithGoogleSuccess, (state, action): AuthState => ({ ...state, loading: false, user: action.data.user })),
   on(loadSignInWithGoogleFailure, (state, action): AuthState => ({ ...state, loading: false, error: action.error })),
   on(loadSignOut, (state): AuthState => ({ ...state, loading: true })),
-  on(loadSignOutSuccess, (state): AuthState => ({ ...state, loading: false })),
-  on(loadSignOutFailure, (state, action): AuthState => ({ ...state, loading: false, error: action.error }))
+  on(loadSignOutSuccess, (state): AuthState => ({ ...state, loading: false, user: null })),
+  on(loadSignOutFailure, (state, action): AuthState => ({ ...state, loading: false, error: action.error, user: null }))
 );

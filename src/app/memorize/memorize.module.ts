@@ -9,6 +9,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ButtonModule } from 'primeng/button';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 import { SharedModule } from '../shared/shared.module';
 
@@ -23,9 +24,10 @@ import {
   LoadItemsEffects,
   UpdateMemorizeItemEffects,
 } from './store';
+import { ReminderComponent } from './reminder/reminder.component';
 
 @NgModule({
-  declarations: [TextMemorizationComponent],
+  declarations: [TextMemorizationComponent, ReminderComponent],
   imports: [
     CommonModule,
     SharedModule,
@@ -40,6 +42,7 @@ import {
     ConfirmDialogModule,
     ToastModule,
     SkeletonModule,
+    TabMenuModule,
     EffectsModule.forFeature([
       LoadItemsEffects,
       CreateMemorizeItemEffects,

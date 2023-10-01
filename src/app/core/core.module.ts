@@ -14,6 +14,8 @@ import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { BadgeModule } from 'primeng/badge';
 
 import { reducers } from './state';
 
@@ -29,6 +31,8 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
     AvatarModule,
     ButtonModule,
     AngularFireAuthModule,
+    TabMenuModule,
+    BadgeModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     StoreModule.forRoot(reducers),

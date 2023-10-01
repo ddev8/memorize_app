@@ -1,0 +1,32 @@
+<div class="card col-12" *ngIf="items$ | async as memorizeItems">
+  <p-dataView
+    #dv
+    *ngIf="memorizeItems.length > 0"
+    [value]="memorizeItems"
+    [paginator]="true"
+    [rows]="9"
+    filterBy="value"
+    layout="grid"
+    [alwaysShowPaginator]="false"
+  >
+    <ng-template let-memorize pTemplate="gridItem">
+      <div class="col-12 md:col-4">
+        <div class="memorize-grid-item card">
+          <div class="memorize-grid-item-top">
+            <!-- <div>
+              <i class="pi pi-times item-icon" (click)="removeItem(memorize)"></i>
+            </div> -->
+            <div>
+              <i class="pi pi-check item-icon" (click)="checkItem(memorize)"></i>
+            </div>
+          </div>
+          <div class="memorize-grid-item-content">
+            <div class="memorize-name">{{ memorize.getText() }}</div>
+            <div class="memorize-description">{{ memorize.getDescription() }}</div>
+            <p-progressBar [value]="memorize.getProgress()"></p-progressBar>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-dataView>
+</div>
